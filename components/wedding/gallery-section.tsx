@@ -48,54 +48,54 @@ export function GallerySection() {
           </p>
         </div>
 
-        {/* Gallery Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-          {gallery.map((image, index) => (
-            <button
-              key={image.id}
-              onClick={() => openLightbox(index)}
-              className="relative aspect-square overflow-hidden rounded-lg group cursor-pointer"
-            >
-              {/* Placeholder with decorative pattern */}
-              <div className="absolute inset-0 bg-primary/5 flex items-center justify-center">
-                <div className="text-center">
-                  <div className="w-16 h-16 mx-auto mb-2 rounded-full bg-secondary/20 flex items-center justify-center">
-                    <svg
-                      className="w-8 h-8 text-secondary"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={1.5}
-                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                      />
-                    </svg>
-                  </div>
-                  <p className="text-xs text-muted-foreground">
-                    {language === "tamil" ? `படம் ${index + 1}` : `Photo ${index + 1}`}
-                  </p>
-                </div>
-              </div>
+        {/* Complex Gallery Layout */}
+        <div className="relative bg-secondary p-2 md:p-4 rounded-xl overflow-hidden mt-8">
+          {/* Left Gradient Overlay */}
+          <div className="absolute top-0 left-0 bottom-0 w-24 md:w-48 bg-gradient-to-r from-secondary via-secondary/80 to-transparent z-10 pointer-events-none" />
+          
+          {/* Right Gradient Overlay */}
+          <div className="absolute top-0 right-0 bottom-0 w-24 md:w-48 bg-gradient-to-l from-secondary via-secondary/80 to-transparent z-10 pointer-events-none" />
 
-              {/* Hover Overlay */}
-              <div className="absolute inset-0 bg-primary/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                <span className="text-primary-foreground text-sm font-medium">
-                  {language === "tamil" ? "பார்க்க" : "View"}
-                </span>
-              </div>
-            </button>
-          ))}
+
+
+          {/* Masonry Columns */}
+          <div className="flex gap-2 md:gap-4 h-[500px] md:h-[700px]">
+            
+            {/* Column 1 */}
+            <div className="flex flex-col gap-2 md:gap-4 flex-1">
+              <GalleryItem index={0} className="h-[30%]" onClick={() => openLightbox(0)} />
+              <GalleryItem index={1} className="flex-1" onClick={() => openLightbox(1)} />
+              <GalleryItem index={2} className="h-[30%]" onClick={() => openLightbox(2)} />
+            </div>
+
+            {/* Column 2 */}
+            <div className="flex flex-col gap-2 md:gap-4 flex-1 -mt-4 mb-4">
+              <GalleryItem index={3} className="flex-1" onClick={() => openLightbox(3)} />
+              <GalleryItem index={4} className="h-[25%]" onClick={() => openLightbox(4)} />
+              <GalleryItem index={5} className="flex-1" onClick={() => openLightbox(5)} />
+            </div>
+
+            {/* Column 3 (Center) */}
+            <div className="flex flex-col gap-2 md:gap-4 flex-1 pt-8 pb-8">
+              <GalleryItem index={0} className="flex-1" onClick={() => openLightbox(0)} />
+              <GalleryItem index={1} className="flex-1" onClick={() => openLightbox(1)} />
+            </div>
+
+            {/* Column 4 */}
+            <div className="flex flex-col gap-2 md:gap-4 flex-1 mt-4 -mb-4">
+              <GalleryItem index={2} className="h-[25%]" onClick={() => openLightbox(2)} />
+              <GalleryItem index={3} className="flex-1" onClick={() => openLightbox(3)} />
+              <GalleryItem index={4} className="h-[35%]" onClick={() => openLightbox(4)} />
+            </div>
+
+            {/* Column 5 */}
+            <div className="flex flex-col gap-2 md:gap-4 flex-1">
+              <GalleryItem index={5} className="h-[35%]" onClick={() => openLightbox(5)} />
+              <GalleryItem index={0} className="flex-1" onClick={() => openLightbox(0)} />
+              <GalleryItem index={1} className="h-[25%]" onClick={() => openLightbox(1)} />
+            </div>
+          </div>
         </div>
-
-        {/* Add Photos Note */}
-        <p className="text-center text-muted-foreground text-sm mt-8">
-          {language === "tamil"
-            ? "உங்கள் படங்களை /public/gallery/ கோப்புறையில் சேர்க்கவும்"
-            : "Add your photos to the /public/gallery/ folder"}
-        </p>
 
         <SectionDivider className="mt-16" />
       </div>
@@ -137,25 +137,42 @@ export function GallerySection() {
           </button>
 
           <div
-            className="max-w-4xl max-h-[80vh] p-4"
+            className="max-w-5xl max-h-[90vh] p-4 flex items-center justify-center"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="bg-primary/10 rounded-lg aspect-video flex items-center justify-center">
-              <p className="text-background text-center">
-                {language === "tamil"
-                  ? `படம் ${selectedImage + 1}`
-                  : `Photo ${selectedImage + 1}`}
-                <br />
-                <span className="text-sm opacity-75">
-                  {language === "tamil"
-                    ? "உங்கள் படத்தை இங்கே சேர்க்கவும்"
-                    : "Your photo will appear here"}
-                </span>
-              </p>
+            <div className="relative rounded-lg overflow-hidden flex items-center justify-center">
+              <img 
+                src={gallery[selectedImage].src} 
+                alt={gallery[selectedImage].alt} 
+                className="max-w-full max-h-[85vh] object-contain shadow-2xl"
+              />
             </div>
           </div>
         </div>
       )}
     </section>
+  );
+}
+
+function GalleryItem({ index, className, onClick }: { index: number; className?: string; onClick: () => void }) {
+  const { language } = useLanguage();
+  const { gallery } = weddingConfig;
+  const image = gallery[index % gallery.length];
+
+  return (
+    <button
+      onClick={onClick}
+      className={`relative overflow-hidden group cursor-pointer bg-primary/5 rounded-sm md:rounded-md flex-shrink-0 ${className}`}
+    >
+      <div 
+        className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+        style={{ backgroundImage: `url('${image.src}')` }}
+      />
+      <div className="absolute inset-0 bg-primary/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+        <span className="text-primary-foreground text-xs md:text-sm font-medium">
+          {language === "tamil" ? "பார்க்க" : "View"}
+        </span>
+      </div>
+    </button>
   );
 }
