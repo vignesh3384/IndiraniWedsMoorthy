@@ -20,12 +20,12 @@ export function Footer() {
 
       <div className="relative z-10 max-w-4xl mx-auto text-center">
         {/* Couple Names */}
-        <h2 className="font-serif text-3xl md:text-4xl mb-4">
+        <h2 className={`font-serif text-3xl md:text-4xl mb-4 ${language === "tamil" ? "font-kavivanar" : ""}`}>
           {language === "tamil" ? couple.bride.nameTamil : couple.bride.name} & {language === "tamil" ? couple.groom.nameTamil : couple.groom.name}
         </h2>
 
         {/* Wedding Date */}
-        <p className="text-primary-foreground/80 mb-8">
+        <p className="text-primary-foreground font-semibold mb-8">
           {weddingDate.toLocaleDateString(language === "tamil" ? "ta-IN" : "en-US", {
             month: "long",
             day: "numeric",
@@ -34,7 +34,7 @@ export function Footer() {
         </p>
 
         {/* Thank You Message */}
-        <p className="text-primary-foreground/70 text-sm max-w-md mx-auto mb-8">
+        <p className="text-primary-foreground/90 font-medium text-sm max-w-md mx-auto mb-8">
           {language === "tamil"
             ? "எங்கள் சிறப்பு தினத்தில் எங்களுடன் இணைந்ததற்கு நன்றி"
             : "Thank you for being a part of our special day"}
@@ -48,7 +48,7 @@ export function Footer() {
         </div>
 
         {/* Copyright */}
-        <p className="text-xs text-primary-foreground/50">
+        <p className="text-xs text-primary-foreground/70 font-medium">
           {language === "tamil"
             ? `© ${new Date().getFullYear()} | அன்புடன் உருவாக்கப்பட்டது`
             : `© ${new Date().getFullYear()} | Made with 🤍 by Santhiya & Dinesh`}

@@ -10,14 +10,21 @@ export function VenueSection() {
   const { venue } = weddingConfig;
 
   return (
-    <section id="venue" className="py-20 px-4">
-      <div className="max-w-6xl mx-auto">
+    <section id="venue" className="py-20 px-4 relative overflow-hidden">
+      {/* Background Image */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-30"
+        style={{ backgroundImage: "url('/images/venue-bg.jpg')" }}
+      />
+      <div className="absolute inset-0 bg-background/80" />
+      
+      <div className="max-w-6xl mx-auto relative z-10">
         {/* Section Header */}
         <div className="text-center mb-16">
           <h2 className="font-serif text-4xl md:text-5xl text-primary mb-4">
             {language === "tamil" ? "திருமண இடம்" : "Wedding Venue"}
           </h2>
-          <p className="text-muted-foreground">
+          <p className="text-foreground font-medium drop-shadow-sm">
             {language === "tamil"
               ? "எங்களை எங்கே கண்டுபிடிப்பது"
               : "Where to find us"}
@@ -89,7 +96,7 @@ export function VenueSection() {
                       <span className="w-6 h-6 rounded-full bg-secondary/20 text-secondary-foreground text-xs flex items-center justify-center flex-shrink-0 mt-0.5">
                         {index + 1}
                       </span>
-                      <p className="text-muted-foreground text-sm">{direction}</p>
+                      <p className="text-foreground font-medium text-sm">{direction}</p>
                     </li>
                   )
                 )}

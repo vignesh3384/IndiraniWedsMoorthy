@@ -41,10 +41,10 @@ export function Navigation() {
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out ${
           isScrolled
-            ? "bg-background/95 backdrop-blur-md shadow-sm"
-            : "bg-transparent"
+            ? "glass-panel bg-white/70 dark:bg-black/70 py-2 border-b-0"
+            : "bg-transparent py-4 border-b border-transparent"
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -52,9 +52,12 @@ export function Navigation() {
             {/* Logo / Couple Initials */}
             <a
               href="#home"
-              className="font-serif text-2xl text-primary hover:text-primary/80 transition-colors"
+              className={`font-serif text-2xl text-primary hover:text-primary/80 transition-colors ${language === "tamil" ? "font-kavivanar" : ""}`}
             >
-              {weddingConfig.couple.bride.name[0]} & {weddingConfig.couple.groom.name[0]}
+              {language === "tamil" 
+                ? `${weddingConfig.couple.bride.nameTamil[0]} & ${weddingConfig.couple.groom.nameTamil[0]}`
+                : `${weddingConfig.couple.bride.name[0]} & ${weddingConfig.couple.groom.name[0]}`
+              }
             </a>
 
             {/* Desktop Navigation */}
@@ -63,7 +66,7 @@ export function Navigation() {
                 <a
                   key={item.href}
                   href={item.href}
-                  className="text-sm text-foreground/80 hover:text-primary transition-colors"
+                  className="text-sm text-foreground font-medium hover:text-primary transition-colors"
                 >
                   {item.label}
                 </a>
@@ -74,7 +77,7 @@ export function Navigation() {
             <div className="flex items-center gap-4">
               <LanguageToggle />
               <button
-                className="md:hidden p-2 text-foreground/80 hover:text-primary transition-colors"
+                className="md:hidden p-2 text-foreground font-medium hover:text-primary transition-colors"
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 aria-label="Toggle menu"
               >
@@ -98,7 +101,7 @@ export function Navigation() {
                 <a
                   key={item.href}
                   href={item.href}
-                  className="block py-2 text-foreground/80 hover:text-primary transition-colors"
+                  className="block py-2 text-foreground font-medium hover:text-primary transition-colors border-b border-primary/10 last:border-0"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   {item.label}

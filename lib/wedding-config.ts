@@ -101,12 +101,11 @@ export const weddingConfig = {
 
   // Gallery Images
   gallery: [
-    { id: 1, src: "/gallery/watercolor.png", alt: "Watercolor couple portrait" },
-    { id: 2, src: "/gallery/oil.png", alt: "Oil painting couple portrait" },
+    { id: 1, src: "/gallery/center_image.png", alt: "Couple central portrait" },
+    { id: 2, src: "/gallery/download.png", alt: "Watercolor exact couple portrait" },
     { id: 3, src: "/gallery/sketch.png", alt: "Pencil sketch couple portrait" },
-    { id: 4, src: "/gallery/vector.png", alt: "Vector art couple portrait" },
-    { id: 5, src: "/gallery/anime.png", alt: "Anime style couple portrait" },
-    { id: 6, src: "/gallery/popart.png", alt: "Pop art style couple portrait" },
+    { id: 4, src: "/gallery/anime.png", alt: "Anime style couple portrait" },
+    { id: 5, src: "/gallery/popart.png", alt: "Pop art style couple portrait" },
   ],
 
   // Venue Details

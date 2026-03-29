@@ -5,6 +5,7 @@ import { weddingConfig } from "@/lib/wedding-config";
 import { useLanguage } from "./language-provider";
 import { SectionDivider } from "./decorative-elements";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
+import { motion } from "framer-motion";
 
 export function GallerySection() {
   const { language } = useLanguage();
@@ -34,27 +35,44 @@ export function GallerySection() {
   };
 
   return (
-    <section id="gallery" className="py-20 px-4 bg-card">
-      <div className="max-w-6xl mx-auto">
+    <section id="gallery" className="py-20 px-4 bg-card relative overflow-hidden">
+      {/* Background Image */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-30"
+        style={{ backgroundImage: "url('/images/gallery-bg.jpg')" }}
+      />
+      <div className="absolute inset-0 bg-background/80" />
+
+      <div className="max-w-6xl mx-auto relative z-10">
         {/* Section Header */}
-        <div className="text-center mb-16">
+        <motion.div 
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8 }}
+        >
           <h2 className="font-serif text-4xl md:text-5xl text-primary mb-4">
             {language === "tamil" ? "புகைப்படத் தொகுப்பு" : "Photo Gallery"}
           </h2>
-          <p className="text-muted-foreground">
+          <p className="text-foreground font-medium drop-shadow-sm">
             {language === "tamil"
               ? "எங்கள் அழகான தருணங்கள்"
               : "Our beautiful moments together"}
           </p>
-        </div>
+        </motion.div>
 
         {/* Complex Gallery Layout */}
-        <div className="relative bg-secondary p-2 md:p-4 rounded-xl overflow-hidden mt-8">
-          {/* Left Gradient Overlay */}
-          <div className="absolute top-0 left-0 bottom-0 w-24 md:w-48 bg-gradient-to-r from-secondary via-secondary/80 to-transparent z-10 pointer-events-none" />
+        <motion.div 
+          className="relative glass-panel bg-white/40 dark:bg-black/40 p-2 md:p-4 rounded-3xl overflow-hidden mt-8"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1, delay: 0.2 }}
+        >
+          {/* Left Gradient Overlay - Removed to let glass panel shine */}
           
-          {/* Right Gradient Overlay */}
-          <div className="absolute top-0 right-0 bottom-0 w-24 md:w-48 bg-gradient-to-l from-secondary via-secondary/80 to-transparent z-10 pointer-events-none" />
+          {/* Right Gradient Overlay - Removed to let glass panel shine */}
 
 
 
@@ -63,22 +81,25 @@ export function GallerySection() {
             
             {/* Column 1 */}
             <div className="flex flex-col gap-2 md:gap-4 flex-1">
-              <GalleryItem index={0} className="h-[30%]" onClick={() => openLightbox(0)} />
-              <GalleryItem index={1} className="flex-1" onClick={() => openLightbox(1)} />
-              <GalleryItem index={2} className="h-[30%]" onClick={() => openLightbox(2)} />
+              <GalleryItem index={1} className="h-[30%]" onClick={() => openLightbox(1)} />
+              <GalleryItem index={2} className="flex-1" onClick={() => openLightbox(2)} />
+              <GalleryItem index={3} className="h-[30%]" onClick={() => openLightbox(3)} />
             </div>
 
             {/* Column 2 */}
             <div className="flex flex-col gap-2 md:gap-4 flex-1 -mt-4 mb-4">
-              <GalleryItem index={3} className="flex-1" onClick={() => openLightbox(3)} />
-              <GalleryItem index={4} className="h-[25%]" onClick={() => openLightbox(4)} />
-              <GalleryItem index={5} className="flex-1" onClick={() => openLightbox(5)} />
+              <GalleryItem index={4} className="flex-1" onClick={() => openLightbox(4)} />
+              <GalleryItem index={0} className="h-[25%]" onClick={() => openLightbox(0)} />
+              <GalleryItem index={1} className="flex-1" onClick={() => openLightbox(1)} />
             </div>
 
-            {/* Column 3 (Center) */}
-            <div className="flex flex-col gap-2 md:gap-4 flex-1 pt-8 pb-8">
-              <GalleryItem index={0} className="flex-1" onClick={() => openLightbox(0)} />
-              <GalleryItem index={1} className="flex-1" onClick={() => openLightbox(1)} />
+            {/* Column 3 (Centerpiece) */}
+            <div className="flex flex-col gap-2 md:gap-4 flex-1.5 pt-4 pb-4">
+              <GalleryItem 
+                index={0} 
+                className="flex-1 ring-2 ring-primary/20 shadow-2xl scale-[1.02]" 
+                onClick={() => openLightbox(0)} 
+              />
             </div>
 
             {/* Column 4 */}
@@ -90,12 +111,12 @@ export function GallerySection() {
 
             {/* Column 5 */}
             <div className="flex flex-col gap-2 md:gap-4 flex-1">
-              <GalleryItem index={5} className="h-[35%]" onClick={() => openLightbox(5)} />
-              <GalleryItem index={0} className="flex-1" onClick={() => openLightbox(0)} />
-              <GalleryItem index={1} className="h-[25%]" onClick={() => openLightbox(1)} />
+              <GalleryItem index={0} className="h-[35%]" onClick={() => openLightbox(0)} />
+              <GalleryItem index={1} className="flex-1" onClick={() => openLightbox(1)} />
+              <GalleryItem index={2} className="h-[25%]" onClick={() => openLightbox(2)} />
             </div>
           </div>
-        </div>
+        </motion.div>
 
         <SectionDivider className="mt-16" />
       </div>
@@ -160,19 +181,33 @@ function GalleryItem({ index, className, onClick }: { index: number; className?:
   const image = gallery[index % gallery.length];
 
   return (
-    <button
+    <motion.button
       onClick={onClick}
-      className={`relative overflow-hidden group cursor-pointer bg-primary/5 rounded-sm md:rounded-md flex-shrink-0 ${className}`}
+      className={`relative overflow-hidden group cursor-pointer bg-primary/5 rounded-md flex-shrink-0 shadow-sm ${className}`}
+      initial={{ opacity: 0, scale: 0.8, filter: "blur(4px)" }}
+      whileInView={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.6, delay: (index % 6) * 0.1 }}
+      whileHover={{ 
+        scale: 1.03, 
+        rotateX: 2, 
+        rotateY: -2, 
+        boxShadow: "0px 10px 30px rgba(0,0,0,0.15)",
+        zIndex: 10
+      }}
     >
       <div 
-        className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
-        style={{ backgroundImage: `url('${image.src}')` }}
+        className="absolute inset-0 bg-cover bg-no-repeat transition-transform duration-700 group-hover:scale-110"
+        style={{ 
+          backgroundImage: `url('${image.src}')`,
+          backgroundPosition: "center 15%" 
+        }}
       />
       <div className="absolute inset-0 bg-primary/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-        <span className="text-primary-foreground text-xs md:text-sm font-medium">
+        <span className="text-primary-foreground text-xs md:text-sm font-medium tracking-widest uppercase backdrop-blur-sm px-4 py-2 rounded-full border border-white/30">
           {language === "tamil" ? "பார்க்க" : "View"}
         </span>
       </div>
-    </button>
+    </motion.button>
   );
 }

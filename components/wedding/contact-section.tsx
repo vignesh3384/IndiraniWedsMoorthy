@@ -3,64 +3,107 @@
 import { weddingConfig } from "@/lib/wedding-config";
 import { useLanguage } from "./language-provider";
 import { Phone, MessageCircle } from "lucide-react";
+import { motion } from "framer-motion";
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    transition: { duration: 0.6, ease: "easeOut" as const }
+  },
+};
 
 export function ContactSection() {
   const { language } = useLanguage();
   const { contacts, social } = weddingConfig;
 
   return (
-    <section id="contact" className="py-20 px-4">
-      <div className="max-w-4xl mx-auto">
+    <section id="contact" className="py-20 px-4 relative overflow-hidden">
+      {/* Background Image */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-30"
+        style={{ backgroundImage: "url('/images/contact-bg.jpg')" }}
+      />
+      <div className="absolute inset-0 bg-background/80" />
+      
+      <div className="max-w-4xl mx-auto relative z-10">
         {/* Section Header */}
-        <div className="text-center mb-12">
-          <h2 className="font-serif text-4xl md:text-5xl text-primary mb-4">
+        <motion.div 
+          className="text-center mb-12"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+          variants={itemVariants}
+        >
+          <h2 className="font-serif text-4xl md:text-5xl text-primary mb-4 drop-shadow-sm">
             {language === "tamil" ? "தொடர்பு கொள்ளுங்கள்" : "Contact Us"}
           </h2>
-          <p className="text-muted-foreground">
+          <p className="text-foreground font-medium drop-shadow-sm">
             {language === "tamil"
               ? "ஏதேனும் கேள்விகள் இருந்தால் எங்களைத் தொடர்பு கொள்ளுங்கள்"
               : "Reach out to us if you have any questions"}
           </p>
-        </div>
+        </motion.div>
 
         {/* Contact Cards */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <motion.div 
+          className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+          variants={containerVariants}
+        >
           {contacts.map((contact, index) => (
-            <div
+            <motion.div
               key={index}
-              className="bg-card rounded-xl border border-border p-6 text-center"
+              variants={itemVariants}
+              whileHover={{ y: -8, scale: 1.02 }}
+              className="glass-panel rounded-3xl p-8 text-center flex flex-col items-center justify-center transition-all duration-300"
             >
-              <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-secondary/20 flex items-center justify-center">
-                <Phone className="w-5 h-5 text-secondary" />
+              <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-primary/10 flex items-center justify-center shadow-inner">
+                <Phone className="w-6 h-6 text-primary" />
               </div>
-              <h3 className="font-medium text-foreground mb-2">
+              <h3 className="font-serif text-xl font-medium text-foreground mb-3">
                 {language === "tamil" ? contact.nameTamil : contact.name}
               </h3>
               <a
                 href={`tel:${contact.phone}`}
-                className="text-muted-foreground hover:text-primary transition-colors"
+                className="text-foreground/80 hover:text-primary transition-colors text-lg font-medium mb-2"
               >
                 {contact.phone}
               </a>
 
               {/* WhatsApp Button */}
-              <a
+              <motion.a
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 href={`https://wa.me/${contact.whatsapp}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 mt-4 px-4 py-2 bg-[#25D366]/10 text-[#25D366] rounded-lg text-sm hover:bg-[#25D366]/20 transition-colors"
+                className="inline-flex items-center gap-2 mt-auto px-6 py-2.5 bg-[#25D366]/10 text-[#25D366] rounded-full text-sm font-medium hover:bg-[#25D366]/20 transition-colors shadow-sm"
               >
                 <MessageCircle className="w-4 h-4" />
                 WhatsApp
-              </a>
-            </div>
+              </motion.a>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
         {/* Hashtag */}
         {social.hashtag && (
           <div className="text-center mt-12">
-            <p className="text-muted-foreground mb-2">
+            <p className="text-foreground/80 font-medium mb-2">
               {language === "tamil"
                 ? "உங்கள் புகைப்படங்களை பகிரவும்"
                 : "Share your photos with us"}

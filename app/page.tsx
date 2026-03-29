@@ -2,6 +2,7 @@
 
 import { LanguageProvider } from "@/components/wedding/language-provider";
 import { Navigation } from "@/components/wedding/navigation";
+import { motion } from "framer-motion";
 import { HeroSection } from "@/components/wedding/hero-section";
 import { EventsSection } from "@/components/wedding/events-section";
 import { GallerySection } from "@/components/wedding/gallery-section";
@@ -14,7 +15,12 @@ import { WhatsAppButton } from "@/components/wedding/whatsapp-button";
 export default function WeddingPage() {
   return (
     <LanguageProvider>
-      <main className="min-h-screen">
+      <motion.main 
+        className="min-h-screen bg-background text-foreground"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.2, ease: "easeInOut" }}
+      >
         <Navigation />
         <HeroSection />
         <EventsSection />
@@ -24,7 +30,7 @@ export default function WeddingPage() {
         <Footer />
         <MusicPlayer />
         <WhatsAppButton />
-      </main>
+      </motion.main>
     </LanguageProvider>
   );
 }

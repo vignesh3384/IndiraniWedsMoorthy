@@ -110,13 +110,20 @@ export function RSVPSection() {
 
   if (isSubmitted) {
     return (
-      <section id="rsvp" className="py-20 px-4 bg-card">
-        <div className="max-w-xl mx-auto text-center">
+      <section id="rsvp" className="py-20 px-4 bg-card relative overflow-hidden">
+        {/* Background Image */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-30"
+          style={{ backgroundImage: "url('/images/rsvp-bg.jpg')" }}
+        />
+        <div className="absolute inset-0 bg-background/80" />
+        
+        <div className="max-w-xl mx-auto text-center relative z-10">
           <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-secondary/20 flex items-center justify-center">
             <Check className="w-10 h-10 text-secondary" />
           </div>
           <h2 className="font-serif text-4xl text-primary mb-4">{t.thankYou}</h2>
-          <p className="text-muted-foreground">
+          <p className="text-foreground font-medium drop-shadow-sm">
             {formData.attending === "yes" ? t.confirmationYes : t.confirmationNo}
           </p>
           <SectionDivider className="mt-16" />
@@ -126,21 +133,29 @@ export function RSVPSection() {
   }
 
   return (
-    <section id="rsvp" className="py-20 px-4 bg-card">
-      <div className="max-w-xl mx-auto">
+    <section id="rsvp" className="py-20 px-4 bg-card relative overflow-hidden">
+      {/* Background Image */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-30"
+        style={{ backgroundImage: "url('/images/rsvp-bg.jpg')" }}
+      />
+      <div className="absolute inset-0 bg-background/80" />
+      <div className="absolute inset-0 bg-background/95" />
+      
+      <div className="max-w-xl mx-auto relative z-10">
         {/* Section Header */}
         <div className="text-center mb-12">
           <h2 className="font-serif text-4xl md:text-5xl text-primary mb-4">
             {t.title}
           </h2>
-          <p className="text-muted-foreground">{t.subtitle}</p>
+          <p className="text-foreground font-semibold">{t.subtitle}</p>
         </div>
 
         {/* RSVP Form */}
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Name */}
           <div>
-            <label htmlFor="name" className="block text-sm font-medium text-foreground mb-2">
+            <label htmlFor="name" className="block text-sm font-bold text-foreground mb-2">
               {t.name}
             </label>
             <input
@@ -151,13 +166,13 @@ export function RSVPSection() {
               value={formData.name}
               onChange={handleChange}
               placeholder={t.namePlaceholder}
-              className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+              className="w-full px-4 py-3 rounded-lg border border-primary/30 bg-background text-foreground placeholder:text-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors"
             />
           </div>
 
           {/* Phone */}
           <div>
-            <label htmlFor="phone" className="block text-sm font-medium text-foreground mb-2">
+            <label htmlFor="phone" className="block text-sm font-bold text-foreground mb-2">
               {t.phone}
             </label>
             <input
@@ -168,13 +183,13 @@ export function RSVPSection() {
               value={formData.phone}
               onChange={handleChange}
               placeholder={t.phonePlaceholder}
-              className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+              className="w-full px-4 py-3 rounded-lg border border-primary/30 bg-background text-foreground placeholder:text-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors"
             />
           </div>
 
           {/* Number of Guests */}
           <div>
-            <label htmlFor="guests" className="block text-sm font-medium text-foreground mb-2">
+            <label htmlFor="guests" className="block text-sm font-bold text-foreground mb-2">
               {t.guests}
             </label>
             <select
@@ -182,7 +197,7 @@ export function RSVPSection() {
               name="guests"
               value={formData.guests}
               onChange={handleChange}
-              className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+              className="w-full px-4 py-3 rounded-lg border border-primary/30 bg-background text-foreground font-medium focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors"
             >
               {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
                 <option key={num} value={num}>
@@ -194,15 +209,15 @@ export function RSVPSection() {
 
           {/* Attending */}
           <div>
-            <label className="block text-sm font-medium text-foreground mb-3">
+            <label className="block text-sm font-bold text-foreground mb-3">
               {t.attending}
             </label>
             <div className="grid grid-cols-2 gap-4">
               <label
                 className={`flex items-center justify-center gap-2 px-4 py-3 rounded-lg border cursor-pointer transition-colors ${
                   formData.attending === "yes"
-                    ? "border-primary bg-primary/10 text-primary"
-                    : "border-border hover:border-primary/50"
+                    ? "border-primary bg-primary text-primary-foreground font-bold"
+                    : "border-primary/30 hover:border-primary/60"
                 }`}
               >
                 <input
@@ -219,8 +234,8 @@ export function RSVPSection() {
               <label
                 className={`flex items-center justify-center gap-2 px-4 py-3 rounded-lg border cursor-pointer transition-colors ${
                   formData.attending === "no"
-                    ? "border-primary bg-primary/10 text-primary"
-                    : "border-border hover:border-primary/50"
+                    ? "border-primary bg-primary text-primary-foreground font-bold"
+                    : "border-primary/30 hover:border-primary/60"
                 }`}
               >
                 <input
@@ -238,7 +253,7 @@ export function RSVPSection() {
 
           {/* Message */}
           <div>
-            <label htmlFor="message" className="block text-sm font-medium text-foreground mb-2">
+            <label htmlFor="message" className="block text-sm font-bold text-foreground mb-2">
               {t.message}
             </label>
             <textarea

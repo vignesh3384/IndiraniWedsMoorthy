@@ -4,26 +4,38 @@ import { weddingConfig } from "@/lib/wedding-config";
 import { useLanguage } from "./language-provider";
 import { CountdownTimer } from "./countdown-timer";
 import { KolamPattern } from "./decorative-elements";
+import { motion, useScroll, useTransform } from "framer-motion";
+import Spline from "@splinetool/react-spline";
 
 export function HeroSection() {
   const { language } = useLanguage();
   const { couple, tagline, taglineTamil, weddingDate } = weddingConfig;
+
+  const { scrollY } = useScroll();
+  const y1 = useTransform(scrollY, [0, 500], [0, 100]);
+  const opacity1 = useTransform(scrollY, [0, 300], [1, 0]);
 
   return (
     <section
       id="home"
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
     >
-      {/* Temple Background Image */}
+      {/* Temple Background Image Fallback & Overlay */}
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: "url('/images/temple-background.jpg')" }}
       />
+
+      {/* Spline 3D Scene */}
+      <div className="absolute inset-0 w-full h-full opacity-60 pointer-events-none z-0">
+        <Spline scene="https://prod.spline.design/6Wq1Q7YGyM-iab9i/scene.splinecode" />
+      </div>
+
       {/* Gradient Overlay for readability */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background/85 via-background/70 to-background/90" />
+      <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/40 to-background/90 backdrop-blur-[2px] z-0" />
       
       {/* Background Pattern */}
-      <div className="absolute inset-0 bg-[url('/patterns/floral-bg.svg')] bg-repeat opacity-5" />
+      <div className="absolute inset-0 bg-[url('/patterns/floral-bg.svg')] bg-repeat opacity-5 pointer-events-none" />
       
       {/* Decorative Kolam Corners */}
       <div className="absolute top-8 left-8 opacity-20">
@@ -40,31 +52,57 @@ export function HeroSection() {
       </div>
 
       {/* Main Content */}
-      <div className="relative z-10 text-center px-4 py-20">
+      <motion.div 
+        className="relative z-10 text-center px-4 py-20 w-full max-w-4xl mx-auto glass-panel mt-16 rounded-3xl"
+        initial={{ opacity: 0, y: 50, scale: 0.95 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 1, ease: "easeOut" }}
+        style={{ y: y1, opacity: opacity1 }}
+      >
         {/* Decorative Top Element */}
         <div className="flex justify-center mb-6">
-          <div className="w-24 h-px bg-secondary" />
-          <div className="mx-4">
+          <div className="w-24 h-px bg-[var(--golden-green)] drop-shadow-sm" />
+          <div className="mx-4 drop-shadow-sm">
             <JasmineIcon />
           </div>
-          <div className="w-24 h-px bg-secondary" />
+          <div className="w-24 h-px bg-[var(--golden-green)] drop-shadow-sm" />
         </div>
 
         {/* Tagline */}
-        <p className="text-foreground/90 text-sm md:text-base tracking-widest uppercase mb-4 font-medium">
+        <motion.p 
+          className="text-foreground text-sm md:text-base tracking-widest uppercase mb-4 font-semibold drop-shadow-sm"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5, duration: 1 }}
+        >
           {language === "tamil" ? taglineTamil : tagline}
-        </p>
+        </motion.p>
 
         {/* Couple Names */}
-        <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl font-light tracking-wide mb-4">
-          <span className="block text-primary drop-shadow-md">{language === "tamil" ? couple.bride.nameTamil : couple.bride.name}</span>
-          <span className="text-secondary text-3xl md:text-4xl font-normal drop-shadow-sm">&</span>
-          <span className="block text-primary drop-shadow-md">{language === "tamil" ? couple.groom.nameTamil : couple.groom.name}</span>
-        </h1>
+        <motion.h1 
+          className="font-serif text-5xl md:text-7xl lg:text-8xl font-light tracking-wide mb-4"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.2, duration: 1.2, ease: "easeOut" }}
+        >
+          <span className={`block text-primary drop-shadow-md brightness-90 ${language === "tamil" ? "font-kavivanar" : "font-serif"}`}>
+            {language === "tamil" ? couple.bride.nameTamil : couple.bride.name}
+          </span>
+          <motion.span 
+            className="text-[var(--golden-green)] text-3xl md:text-4xl font-normal drop-shadow-sm inline-block mx-4"
+            whileHover={{ scale: 1.2, rotate: 180 }}
+            transition={{ type: "spring", stiffness: 200 }}
+          >
+            &
+          </motion.span>
+          <span className={`block text-primary drop-shadow-md brightness-90 ${language === "tamil" ? "font-kavivanar" : "font-serif"}`}>
+            {language === "tamil" ? couple.groom.nameTamil : couple.groom.name}
+          </span>
+        </motion.h1>
 
         {/* Wedding Date */}
         <div className="mt-8 mb-12">
-          <p className="font-serif text-xl md:text-2xl text-foreground font-medium drop-shadow-sm">
+          <p className="font-serif text-xl md:text-2xl text-foreground font-semibold drop-shadow-sm">
             {weddingDate.toLocaleDateString(language === "tamil" ? "ta-IN" : "en-US", {
               weekday: "long",
               year: "numeric",
@@ -79,17 +117,21 @@ export function HeroSection() {
 
         {/* Decorative Bottom Element */}
         <div className="flex justify-center mt-12">
-          <div className="w-16 h-px bg-secondary" />
+          <div className="w-16 h-px bg-[var(--golden-green)]" />
           <div className="mx-4">
             <TempleMotif />
           </div>
-          <div className="w-16 h-px bg-secondary" />
+          <div className="w-16 h-px bg-[var(--golden-green)]" />
         </div>
 
         {/* Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+        <motion.div 
+          className="absolute -bottom-16 left-1/2 -translate-x-1/2"
+          animate={{ y: [0, 10, 0] }}
+          transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+        >
           <svg
-            className="w-6 h-6 text-primary/60"
+            className="w-8 h-8 text-primary shadow-sm"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -101,8 +143,8 @@ export function HeroSection() {
               d="M19 14l-7 7m0 0l-7-7m7 7V3"
             />
           </svg>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </section>
   );
 }
@@ -110,7 +152,7 @@ export function HeroSection() {
 function JasmineIcon() {
   return (
     <svg
-      className="w-8 h-8 text-secondary"
+      className="w-8 h-8 text-[var(--golden-green)]"
       viewBox="0 0 24 24"
       fill="currentColor"
     >
