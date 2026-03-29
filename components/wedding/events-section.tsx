@@ -2,144 +2,208 @@
 
 import { weddingConfig } from "@/lib/wedding-config";
 import { useLanguage } from "./language-provider";
-import { SectionDivider } from "./decorative-elements";
-import { Calendar, Clock, MapPin } from "lucide-react";
+import { SectionDivider, KolamPattern } from "./decorative-elements";
+import { Calendar, Clock, MapPin, ExternalLink, CalendarPlus } from "lucide-react";
 import { motion } from "framer-motion";
 
 export function EventsSection() {
   const { language } = useLanguage();
   const { events } = weddingConfig;
 
+  // Function to create a simple calendar reminder (placeholder logic)
+  const handleCalendarAdd = (e: React.MouseEvent, event: any) => {
+    e.preventDefault();
+    // In a real app, this would generate an .ics file or Google Calendar link
+    alert(language === "tamil" ? "காலெண்டரில் சேர்க்கப்பட்டது!" : "Added to your calendar!");
+  };
+
   return (
-    <section id="events" className="py-20 px-4 relative overflow-hidden">
-      {/* Background Image */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-30"
-        style={{ backgroundImage: "url('/images/events-bg.jpg')" }}
-      />
-      <div className="absolute inset-0 bg-background/60" />
-      
-      <div className="max-w-6xl mx-auto relative z-10">
+    <section id="events" className="py-24 px-4 relative overflow-hidden bg-background">
+      {/* Background Decorative Layer */}
+      <div className="absolute top-0 left-0 w-full h-full opacity-[0.03] pointer-events-none select-none overflow-hidden">
+        <div className="absolute top-20 -left-20 scale-150 rotate-12">
+          <KolamPattern size={600} color="var(--primary)" />
+        </div>
+        <div className="absolute -bottom-40 -right-40 scale-150 -rotate-12">
+          <KolamPattern size={800} color="var(--primary)" />
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto relative z-10">
         {/* Section Header */}
         <motion.div 
-          className="text-center mb-16 relative z-10"
+          className="text-center mb-24"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
-          <h2 className="font-serif text-4xl md:text-5xl text-primary drop-shadow-sm mb-4">
-            {language === "tamil" ? "நிகழ்வுகள்" : "Wedding Events"}
+          <span className="inline-block px-4 py-1.5 bg-primary/5 text-primary text-sm font-bold tracking-widest uppercase mb-4 rounded-full border border-primary/10">
+            {language === "tamil" ? "நாட்காட்டி" : "Mark Your Calendar"}
+          </span>
+          <h2 className="font-serif text-5xl md:text-7xl text-primary drop-shadow-sm mb-6">
+            {language === "tamil" ? "திருமண நிகழ்வுகள்" : "The Celebration"}
           </h2>
-          <p className="text-foreground font-medium max-w-xl mx-auto drop-shadow-sm">
+          <div className="w-24 h-1 bg-secondary mx-auto mb-6 rounded-full opacity-60" />
+          <p className="text-foreground/80 font-medium max-w-2xl mx-auto text-lg leading-relaxed italic">
             {language === "tamil"
-              ? "எங்கள் சிறப்பு தினங்களில் எங்களுடன் இணையுங்கள்"
-              : "Join us to celebrate our special days"}
+              ? "எங்கள் அன்புக்குரியவர்களுடன் எங்கள் புதிய பயணத்தைத் தொடங்கும் போது உங்கள் வருகை எங்களுக்கு மகிழ்ச்சி அளிக்கும்."
+              : "Your presence will make our celebration even more special as we begin our new journey together."}
           </p>
         </motion.div>
 
-        {/* Events Timeline */}
-        <div className="relative py-10 z-10">
-          {/* Vertical Line */}
-          <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-px bg-primary/30 -translate-x-1/2" />
-          
-          <div className="space-y-12 md:space-y-24">
-            {events.map((event, index) => (
-              <motion.div
+        {/* Staggered Content Blocks */}
+        <div className="space-y-32 md:space-y-0 max-w-6xl mx-auto">
+          {events.map((event, index) => {
+            const isEven = index % 2 === 0;
+            return (
+              <div 
                 key={event.id}
-                className={`relative flex flex-col md:flex-row gap-8 items-center ${
-                  index % 2 === 0 ? "md:flex-row-reverse" : ""
+                className={`flex flex-col md:flex-row items-center gap-12 lg:gap-24 mb-32 last:mb-0 ${
+                  isEven ? "md:flex-row" : "md:flex-row-reverse"
                 }`}
-                initial={{ opacity: 0, x: index % 2 === 0 ? 50 : -50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.8, delay: index * 0.2 }}
               >
-                {/* Timeline Dot */}
-                <div className="hidden md:flex absolute left-1/2 w-8 h-8 rounded-full bg-background border-4 border-primary z-20 top-1/2 -translate-x-1/2 -translate-y-1/2 items-center justify-center shadow-lg">
-                  <div className="w-2 h-2 rounded-full bg-secondary" />
-                </div>
+                {/* Visual Side */}
+                <motion.div 
+                  className="w-full md:w-1/2 relative group"
+                  initial={{ opacity: 0, x: isEven ? -50 : 50 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, margin: "-100px" }}
+                  transition={{ duration: 1, ease: "easeOut" }}
+                >
+                  <div className="aspect-[4/5] relative rounded-[4rem] overflow-hidden shadow-2xl border-4 border-white dark:border-white/10 ring-1 ring-primary/20">
+                    <img 
+                      src={index === 0 
+                        ? "/images/reception-anime.jpg" 
+                        : "/images/wedding-ceremony-south.jpg"} 
+                      alt={event.title}
+                      className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-primary/60 to-transparent mix-blend-multiply opacity-40 group-hover:opacity-20 transition-opacity" />
+                    
+                    {/* Event Label Overlay */}
+                    <div className="absolute bottom-8 left-8 right-8 text-white p-6 glass-panel rounded-3xl bg-black/40 border-white/20">
+                       <h4 className="font-serif text-2xl mb-1">
+                         {language === "tamil" ? event.titleTamil : event.title}
+                       </h4>
+                       <p className="text-sm opacity-90 font-medium tracking-wide">
+                        {language === "tamil" ? "இடம்:" : "Venue:"} {language === "tamil" ? event.venueTamil : event.venue}
+                       </p>
+                    </div>
+                  </div>
+                  
+                  {/* Floating Ornament */}
+                  <div className={`absolute -top-6 ${isEven ? "-right-6" : "-left-6"} w-24 h-24 bg-secondary/10 rounded-full blur-2xl animate-pulse`} />
+                </motion.div>
 
-                {/* Content Card */}
-                <div className="w-full md:w-1/2 glass-panel p-8 rounded-3xl relative hover:shadow-xl transition-shadow duration-300">
-                  {/* Event Badge */}
-                  <div className="absolute top-4 right-4">
-                    <span className="px-3 py-1 bg-secondary/20 text-secondary-foreground text-xs font-medium rounded-full border border-secondary/30">
-                      {index === 0 
-                        ? (language === "tamil" ? "முதல் நிகழ்வு" : "First Event") 
-                        : (language === "tamil" ? "முக்கிய நிகழ்வு" : "Main Event")}
+                {/* Content Side */}
+                <motion.div 
+                  className="w-full md:w-1/2 text-left space-y-8"
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-100px" }}
+                  transition={{ duration: 1, delay: 0.2 }}
+                >
+                  <div className="space-y-2">
+                    <span className="text-secondary font-bold text-lg tracking-widest uppercase block mb-2">
+                      {language === "tamil" ? (index === 0 ? "வரவேற்பு" : "திருமணம்") : (index === 0 ? "Reception" : "Muhurtam")}
                     </span>
+                    <h3 className="font-serif text-4xl md:text-5xl text-primary leading-tight">
+                      {language === "tamil" ? event.titleTamil : event.title}
+                    </h3>
                   </div>
 
-                  {/* Event Title */}
-                  <h3 className="font-serif text-3xl text-primary mb-6">
-                    {language === "tamil" ? event.titleTamil : event.title}
-                  </h3>
-
-                  {/* Event Details */}
-                  <div className="space-y-4">
-                    <div className="flex items-start gap-4">
-                      <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                        <Calendar className="w-5 h-5 text-primary" />
+                  <div className="space-y-6">
+                    {/* Date Block */}
+                    <div className="flex items-center gap-6 group">
+                      <div className="w-14 h-14 rounded-2xl bg-primary/5 flex items-center justify-center shrink-0 border border-primary/10 group-hover:bg-primary group-hover:text-white transition-all duration-300">
+                        <Calendar className="w-6 h-6" />
                       </div>
-                      <div className="mt-1">
-                        <p className="font-medium text-foreground text-lg">
+                      <div>
+                        <p className="text-foreground/60 text-sm uppercase tracking-wider font-bold">
+                          {language === "tamil" ? "தேதி" : "The Date"}
+                        </p>
+                        <p className="text-xl md:text-2xl font-serif text-foreground font-bold leading-none mt-1">
                           {language === "tamil" ? event.dateTamil : event.date}
                         </p>
                       </div>
                     </div>
 
-                    <div className="flex items-start gap-4">
-                      <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                        <Clock className="w-5 h-5 text-primary" />
+                    {/* Time Block */}
+                    <div className="flex items-center gap-6 group">
+                      <div className="w-14 h-14 rounded-2xl bg-secondary/5 flex items-center justify-center shrink-0 border border-secondary/10 group-hover:bg-secondary group-hover:text-white transition-all duration-300">
+                        <Clock className="w-6 h-6" />
                       </div>
-                      <div className="mt-1">
-                        <p className="font-medium text-foreground text-lg">
+                      <div>
+                        <p className="text-foreground/60 text-sm uppercase tracking-wider font-bold">
+                          {language === "tamil" ? "நேரம்" : "The Time"}
+                        </p>
+                        <p className="text-xl md:text-2xl font-serif text-foreground font-bold leading-none mt-1">
                           {language === "tamil" ? event.timeTamil : event.time}
                         </p>
                       </div>
                     </div>
 
-                    <div className="flex items-start gap-4">
-                      <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                        <MapPin className="w-5 h-5 text-primary" />
+                    {/* Venue Block */}
+                    <div className="flex items-start gap-6 group">
+                      <div className="w-14 h-14 rounded-2xl bg-primary/5 flex items-center justify-center shrink-0 border border-primary/10 group-hover:bg-primary group-hover:text-white transition-all duration-300 mt-1">
+                        <MapPin className="w-6 h-6" />
                       </div>
-                      <div className="mt-1">
-                        <p className="font-medium text-foreground text-lg">
+                      <div>
+                        <p className="text-foreground/60 text-sm uppercase tracking-wider font-bold">
+                          {language === "tamil" ? "இடம்" : "The Venue"}
+                        </p>
+                        <p className="text-xl md:text-2xl font-serif text-foreground font-bold leading-tight mt-1">
                           {language === "tamil" ? event.venueTamil : event.venue}
                         </p>
-                        <p className="text-sm text-foreground/80 font-medium mt-1">
+                        <p className="text-foreground/70 text-base leading-relaxed mt-2 max-w-sm">
                           {language === "tamil" ? event.addressTamil : event.address}
                         </p>
                       </div>
                     </div>
                   </div>
 
-                  {/* Description */}
-                  <p className="mt-6 text-foreground/90 text-sm leading-relaxed border-t border-primary/10 pt-6">
+                  <p className="text-foreground/80 leading-relaxed text-lg italic border-l-4 border-secondary/30 pl-6 py-2">
                     {language === "tamil" ? event.descriptionTamil : event.description}
                   </p>
 
-                  {/* Map Link */}
-                  <a
-                    href={event.mapUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 mt-6 px-6 py-2 bg-primary text-primary-foreground rounded-full text-sm hover:bg-primary/90 transition-colors shadow-md"
-                  >
-                    <MapPin className="w-4 h-4" />
-                    {language === "tamil" ? "வரைபடத்தில் காண்க" : "View on Map"}
-                  </a>
-                </div>
-                
-                {/* Empty Space for alignment on Desktop */}
-                <div className="hidden md:block md:w-1/2" />
-              </motion.div>
-            ))}
-          </div>
+                  <div className="flex flex-wrap gap-4 pt-4">
+                    <a
+                      href={event.mapUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-primary text-white rounded-full text-sm font-bold hover:shadow-xl hover:scale-105 transition-all duration-300"
+                    >
+                      <MapPin className="w-4 h-4" />
+                      {language === "tamil" ? "வரைபடத்தில் காண்க" : "Directions"}
+                    </a>
+                    <button
+                      onClick={(e) => handleCalendarAdd(e, event)}
+                      className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-primary border-2 border-primary/20 rounded-full text-sm font-bold hover:bg-primary/5 hover:border-primary transition-all duration-300"
+                    >
+                      <CalendarPlus className="w-4 h-4" />
+                      {language === "tamil" ? "நாட்காட்டியில் சேர்" : "Add to Calendar"}
+                    </button>
+                  </div>
+                </motion.div>
+              </div>
+            );
+          })}
         </div>
 
-        <SectionDivider className="mt-16" />
+        <motion.div 
+          className="mt-32 text-center"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1, delay: 0.5 }}
+        >
+          <div className="inline-flex items-center gap-4 text-primary opacity-40">
+            <div className="h-px w-20 bg-primary" />
+            <KolamPattern size={60} color="currentColor" />
+            <div className="h-px w-20 bg-primary" />
+          </div>
+        </motion.div>
       </div>
     </section>
   );

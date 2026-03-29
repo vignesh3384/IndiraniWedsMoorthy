@@ -2,10 +2,15 @@
 
 interface KolamPatternProps {
   size?: number;
+  color?: string;
   className?: string;
 }
 
-export function KolamPattern({ size = 100, className = "" }: KolamPatternProps) {
+export function KolamPattern({ 
+  size = 100, 
+  color = "currentColor", 
+  className = "" 
+}: KolamPatternProps) {
   return (
     <svg
       width={size}
@@ -13,11 +18,12 @@ export function KolamPattern({ size = 100, className = "" }: KolamPatternProps) 
       viewBox="0 0 100 100"
       fill="none"
       className={className}
+      style={{ color }}
     >
-      <circle cx="50" cy="50" r="45" stroke="currentColor" strokeWidth="0.5" className="text-primary" />
-      <circle cx="50" cy="50" r="35" stroke="currentColor" strokeWidth="0.5" className="text-primary" />
-      <circle cx="50" cy="50" r="25" stroke="currentColor" strokeWidth="0.5" className="text-primary" />
-      <circle cx="50" cy="50" r="15" stroke="currentColor" strokeWidth="0.5" className="text-primary" />
+      <circle cx="50" cy="50" r="45" stroke="currentColor" strokeWidth="0.5" />
+      <circle cx="50" cy="50" r="35" stroke="currentColor" strokeWidth="0.5" />
+      <circle cx="50" cy="50" r="25" stroke="currentColor" strokeWidth="0.5" />
+      <circle cx="50" cy="50" r="15" stroke="currentColor" strokeWidth="0.5" />
       
       {/* Radial lines */}
       {[0, 45, 90, 135, 180, 225, 270, 315].map((angle) => (
@@ -29,7 +35,6 @@ export function KolamPattern({ size = 100, className = "" }: KolamPatternProps) 
           y2={50 + 45 * Math.sin((angle * Math.PI) / 180)}
           stroke="currentColor"
           strokeWidth="0.5"
-          className="text-primary"
         />
       ))}
       
@@ -41,7 +46,6 @@ export function KolamPattern({ size = 100, className = "" }: KolamPatternProps) 
           cy={50 + 40 * Math.sin((angle * Math.PI) / 180)}
           r="2"
           fill="currentColor"
-          className="text-secondary"
         />
       ))}
     </svg>
