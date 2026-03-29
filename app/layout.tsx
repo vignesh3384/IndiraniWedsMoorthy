@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Cormorant_Garamond, Lato, Kavivanar } from 'next/font/google'
+import { Cormorant_Garamond, Lato, Noto_Serif_Tamil, Sacramento } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 
@@ -15,10 +15,16 @@ const lato = Lato({
   variable: "--font-sans"
 });
 
-const kavivanar = Kavivanar({
+const notoTamil = Noto_Serif_Tamil({
   subsets: ["tamil", "latin"],
+  weight: ["300", "400"],
+  variable: "--font-tamil-thin"
+});
+
+const sacramento = Sacramento({
+  subsets: ["latin"],
   weight: ["400"],
-  variable: "--font-kavivanar"
+  variable: "--font-script"
 });
 
 export const metadata: Metadata = {
@@ -50,7 +56,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${cormorant.variable} ${lato.variable} ${kavivanar.variable}`}>
+    <html lang="en" className={`${cormorant.variable} ${lato.variable} ${notoTamil.variable} ${sacramento.variable}`}>
       <body className="font-sans antialiased">
         {children}
         <Analytics />

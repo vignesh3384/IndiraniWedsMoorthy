@@ -4,37 +4,25 @@ import { weddingConfig } from "@/lib/wedding-config";
 import { useLanguage } from "./language-provider";
 import { CountdownTimer } from "./countdown-timer";
 import { KolamPattern } from "./decorative-elements";
-import { motion, useScroll, useTransform } from "framer-motion";
-import Spline from "@splinetool/react-spline";
+import { motion } from "framer-motion";
 
 export function HeroSection() {
   const { language } = useLanguage();
   const { couple, tagline, taglineTamil, weddingDate } = weddingConfig;
-
-  const { scrollY } = useScroll();
-  const y1 = useTransform(scrollY, [0, 500], [0, 100]);
-  const opacity1 = useTransform(scrollY, [0, 300], [1, 0]);
 
   return (
     <section
       id="home"
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
     >
-      {/* Temple Background Image Fallback & Overlay */}
+      {/* Static Background Image */}
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: "url('/images/temple-background.jpg')" }}
       />
 
-      {/* Spline 3D Scene */}
-      <div className="absolute inset-0 w-full h-full opacity-60 pointer-events-none z-0">
-        <Spline scene="https://prod.spline.design/6Wq1Q7YGyM-iab9i/scene.splinecode" />
-      </div>
-
-      {/* Gradient Overlay for readability */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/40 to-background/90 backdrop-blur-[2px] z-0" />
-      
-      {/* Background Pattern */}
+      {/* Gradient & Texture Overlays (Increased opacity for better text visibility) */}
+      <div className="absolute inset-0 bg-gradient-to-b from-background/85 via-background/70 to-background/100 z-0" />
       <div className="absolute inset-0 bg-[url('/patterns/floral-bg.svg')] bg-repeat opacity-5 pointer-events-none" />
       
       {/* Decorative Kolam Corners */}
@@ -53,11 +41,10 @@ export function HeroSection() {
 
       {/* Main Content */}
       <motion.div 
-        className="relative z-10 text-center px-4 py-20 w-full max-w-4xl mx-auto glass-panel mt-16 rounded-3xl"
+        className="relative z-10 text-center px-4 py-20 w-full max-w-4xl mx-auto mt-16"
         initial={{ opacity: 0, y: 50, scale: 0.95 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 1, ease: "easeOut" }}
-        style={{ y: y1, opacity: opacity1 }}
       >
         {/* Decorative Top Element */}
         <div className="flex justify-center mb-6">
@@ -70,7 +57,7 @@ export function HeroSection() {
 
         {/* Tagline */}
         <motion.p 
-          className="text-foreground text-sm md:text-base tracking-widest uppercase mb-4 font-semibold drop-shadow-sm"
+          className="text-foreground text-sm md:text-base tracking-widest uppercase mb-4 font-bold drop-shadow-md"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5, duration: 1 }}
@@ -85,24 +72,20 @@ export function HeroSection() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.2, duration: 1.2, ease: "easeOut" }}
         >
-          <span className={`block text-primary drop-shadow-md brightness-90 ${language === "tamil" ? "font-kavivanar" : "font-serif"}`}>
+          <span className={`block text-primary drop-shadow-lg ${language === "tamil" ? "font-tamil-thin font-light tracking-wide" : "font-serif font-light tracking-wide"}`}>
             {language === "tamil" ? couple.bride.nameTamil : couple.bride.name}
           </span>
-          <motion.span 
-            className="text-[var(--golden-green)] text-3xl md:text-4xl font-normal drop-shadow-sm inline-block mx-4"
-            whileHover={{ scale: 1.2, rotate: 180 }}
-            transition={{ type: "spring", stiffness: 200 }}
-          >
+          <span className="text-[var(--golden-green)] text-3xl md:text-5xl font-light drop-shadow-md inline-block mx-4">
             &
-          </motion.span>
-          <span className={`block text-primary drop-shadow-md brightness-90 ${language === "tamil" ? "font-kavivanar" : "font-serif"}`}>
+          </span>
+          <span className={`block text-primary drop-shadow-lg ${language === "tamil" ? "font-tamil-thin font-light tracking-wide" : "font-serif font-light tracking-wide"}`}>
             {language === "tamil" ? couple.groom.nameTamil : couple.groom.name}
           </span>
         </motion.h1>
 
         {/* Wedding Date */}
         <div className="mt-8 mb-12">
-          <p className="font-serif text-xl md:text-2xl text-foreground font-semibold drop-shadow-sm">
+          <p className="font-serif text-xl md:text-2xl text-foreground font-bold drop-shadow-md">
             {weddingDate.toLocaleDateString(language === "tamil" ? "ta-IN" : "en-US", {
               weekday: "long",
               year: "numeric",

@@ -20,8 +20,8 @@ export function Footer() {
 
       <div className="relative z-10 max-w-4xl mx-auto text-center">
         {/* Couple Names */}
-        <h2 className={`font-serif text-3xl md:text-4xl mb-4 ${language === "tamil" ? "font-kavivanar" : ""}`}>
-          {language === "tamil" ? couple.bride.nameTamil : couple.bride.name} & {language === "tamil" ? couple.groom.nameTamil : couple.groom.name}
+        <h2 className={`mb-4 ${language === "tamil" ? "font-kavivanar font-medium text-3xl md:text-4xl" : "font-vibes font-normal text-4xl md:text-5xl tracking-normal"}`}>
+          {language === "tamil" ? couple.bride.nameTamil : couple.bride.name} <span className="font-sans text-xl md:text-2xl px-2">&</span> {language === "tamil" ? couple.groom.nameTamil : couple.groom.name}
         </h2>
 
         {/* Wedding Date */}
