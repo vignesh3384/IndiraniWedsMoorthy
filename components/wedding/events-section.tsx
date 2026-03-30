@@ -3,18 +3,87 @@
 import { weddingConfig } from "@/lib/wedding-config";
 import { useLanguage } from "./language-provider";
 import { SectionDivider, KolamPattern } from "./decorative-elements";
-import { Calendar, Clock, MapPin, ExternalLink, CalendarPlus } from "lucide-react";
-import { motion } from "framer-motion";
+import { Calendar, Clock, MapPin, ExternalLink, CalendarPlus, X, Check } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
+
+// Helper to format dates for Calendar services (YYYYMMDDTHHmmSSZ)
+const formatCalendarDate = (dateStr: string, timeStr: string, isEnd: boolean = false) => {
+  // Parsing specific formats from wedding-config.ts
+  // Date: "April 19, 2026" or "April 20, 2026"
+  // Time: "6:00 PM - 10:00 PM" or "Muhurtam: 6:00 AM - 7:30 AM"
+
+  const year = "2026";
+  const month = "04";
+  const day = dateStr.includes("20") ? "20" : "19";
+
+  let hour = "";
+  let minute = "00";
+
+  if (dateStr.includes("19")) {
+    // Reception: 6:00 PM - 10:00 PM
+    hour = isEnd ? "22" : "18";
+  } else {
+    // Wedding: 6:00 AM - 7:30 AM
+    if (isEnd) {
+      hour = "07";
+      minute = "30";
+    } else {
+      hour = "06";
+    }
+  }
+
+  return `${year}${month}${day}T${hour}${minute}00`;
+};
 
 export function EventsSection() {
   const { language } = useLanguage();
   const { events } = weddingConfig;
+  const [activeMenu, setActiveMenu] = useState<string | null>(null);
 
-  // Function to create a simple calendar reminder (placeholder logic)
-  const handleCalendarAdd = (e: React.MouseEvent, event: any) => {
-    e.preventDefault();
-    // In a real app, this would generate an .ics file or Google Calendar link
-    alert(language === "tamil" ? "காலெண்டரில் சேர்க்கப்பட்டது!" : "Added to your calendar!");
+  const handleGoogleCalendar = (event: any) => {
+    const start = formatCalendarDate(event.date, event.time);
+    const end = formatCalendarDate(event.date, event.time, true);
+    const details = language === "tamil" ? event.descriptionTamil : event.description;
+    const location = language === "tamil" ? `${event.venueTamil}, ${event.addressTamil}` : `${event.venue}, ${event.address}`;
+
+    const url = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(
+      language === "tamil" ? event.titleTamil : event.title
+    )}&dates=${start}/${end}&details=${encodeURIComponent(details)}&location=${encodeURIComponent(
+      location
+    )}`;
+    window.open(url, "_blank");
+    setActiveMenu(null);
+  };
+
+  const handleICalDownload = (event: any) => {
+    const start = formatCalendarDate(event.date, event.time);
+    const end = formatCalendarDate(event.date, event.time, true);
+    const title = language === "tamil" ? event.titleTamil : event.title;
+    const location = language === "tamil" ? `${event.venueTamil}, ${event.addressTamil}` : `${event.venue}, ${event.address}`;
+    const description = language === "tamil" ? event.descriptionTamil : event.description;
+
+    const icsContent = [
+      "BEGIN:VCALENDAR",
+      "VERSION:2.0",
+      "BEGIN:VEVENT",
+      `DTSTART:${start}`,
+      `DTEND:${end}`,
+      `SUMMARY:${title}`,
+      `LOCATION:${location}`,
+      `DESCRIPTION:${description}`,
+      "END:VEVENT",
+      "END:VCALENDAR",
+    ].join("\n");
+
+    const blob = new Blob([icsContent], { type: "text/calendar;charset=utf-8" });
+    const link = document.createElement("a");
+    link.href = window.URL.createObjectURL(blob);
+    link.setAttribute("download", `${event.id}.ics`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    setActiveMenu(null);
   };
 
   return (
@@ -115,7 +184,7 @@ export function EventsSection() {
 
                   <div className="space-y-6">
                     {/* Date Block */}
-                    <div className="flex items-center gap-6 group">
+                    <div className="flex items-center gap-6 group font-sans">
                       <div className="w-14 h-14 rounded-2xl bg-primary/5 flex items-center justify-center shrink-0 border border-primary/10 group-hover:bg-primary group-hover:text-white transition-all duration-300">
                         <Calendar className="w-6 h-6" />
                       </div>
@@ -123,14 +192,14 @@ export function EventsSection() {
                         <p className="text-foreground/60 text-sm uppercase tracking-wider font-bold">
                           {language === "tamil" ? "தேதி" : "The Date"}
                         </p>
-                        <p className="text-xl md:text-2xl font-serif text-foreground font-bold leading-none mt-1">
+                        <p className="text-xl md:text-2xl text-foreground font-bold leading-none mt-1">
                           {language === "tamil" ? event.dateTamil : event.date}
                         </p>
                       </div>
                     </div>
 
                     {/* Time Block */}
-                    <div className="flex items-center gap-6 group">
+                    <div className="flex items-center gap-6 group font-sans">
                       <div className="w-14 h-14 rounded-2xl bg-secondary/5 flex items-center justify-center shrink-0 border border-secondary/10 group-hover:bg-secondary group-hover:text-white transition-all duration-300">
                         <Clock className="w-6 h-6" />
                       </div>
@@ -138,14 +207,14 @@ export function EventsSection() {
                         <p className="text-foreground/60 text-sm uppercase tracking-wider font-bold">
                           {language === "tamil" ? "நேரம்" : "The Time"}
                         </p>
-                        <p className="text-xl md:text-2xl font-serif text-foreground font-bold leading-none mt-1">
+                        <p className="text-xl md:text-2xl text-foreground font-bold leading-none mt-1">
                           {language === "tamil" ? event.timeTamil : event.time}
                         </p>
                       </div>
                     </div>
 
                     {/* Venue Block */}
-                    <div className="flex items-start gap-6 group">
+                    <div className="flex items-start gap-6 group font-sans">
                       <div className="w-14 h-14 rounded-2xl bg-primary/5 flex items-center justify-center shrink-0 border border-primary/10 group-hover:bg-primary group-hover:text-white transition-all duration-300 mt-1">
                         <MapPin className="w-6 h-6" />
                       </div>
@@ -153,7 +222,7 @@ export function EventsSection() {
                         <p className="text-foreground/60 text-sm uppercase tracking-wider font-bold">
                           {language === "tamil" ? "இடம்" : "The Venue"}
                         </p>
-                        <p className="text-xl md:text-2xl font-serif text-foreground font-bold leading-tight mt-1">
+                        <p className="text-xl md:text-2xl text-foreground font-bold leading-tight mt-1">
                           {language === "tamil" ? event.venueTamil : event.venue}
                         </p>
                         <p className="text-foreground/70 text-base leading-relaxed mt-2 max-w-sm">
@@ -167,7 +236,7 @@ export function EventsSection() {
                     {language === "tamil" ? event.descriptionTamil : event.description}
                   </p>
 
-                  <div className="flex flex-wrap gap-4 pt-4">
+                  <div className="flex flex-wrap gap-4 pt-4 relative">
                     <a
                       href={event.mapUrl}
                       target="_blank"
@@ -177,13 +246,47 @@ export function EventsSection() {
                       <MapPin className="w-4 h-4" />
                       {language === "tamil" ? "வரைபடத்தில் காண்க" : "Directions"}
                     </a>
-                    <button
-                      onClick={(e) => handleCalendarAdd(e, event)}
-                      className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-primary border-2 border-primary/20 rounded-full text-sm font-bold hover:bg-primary/5 hover:border-primary transition-all duration-300"
-                    >
-                      <CalendarPlus className="w-4 h-4" />
-                      {language === "tamil" ? "நாட்காட்டியில் சேர்" : "Add to Calendar"}
-                    </button>
+                    
+                    <div className="relative">
+                      <button
+                        onClick={() => setActiveMenu(activeMenu === event.id ? null : event.id)}
+                        className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-primary border-2 border-primary/20 rounded-full text-sm font-bold hover:bg-primary/5 hover:border-primary transition-all duration-300"
+                      >
+                        <CalendarPlus className="w-4 h-4" />
+                        {language === "tamil" ? "நாட்காட்டியில் சேர்" : "Add to Calendar"}
+                      </button>
+
+                      <AnimatePresence>
+                        {activeMenu === event.id && (
+                          <motion.div 
+                            className="absolute bottom-full left-0 mb-4 w-56 bg-white rounded-3xl shadow-2xl border border-primary/10 overflow-hidden z-50 p-2"
+                            initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                            transition={{ duration: 0.2, ease: "easeOut" }}
+                          >
+                            <button 
+                              onClick={() => handleGoogleCalendar(event)}
+                              className="w-full flex items-center gap-3 px-4 py-3 hover:bg-primary/5 text-primary text-sm font-bold rounded-2xl transition-colors"
+                            >
+                              <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                                <ExternalLink className="w-4 h-4" />
+                              </div>
+                              Google Calendar
+                            </button>
+                            <button 
+                              onClick={() => handleICalDownload(event)}
+                              className="w-full flex items-center gap-3 px-4 py-3 hover:bg-primary/5 text-primary text-sm font-bold rounded-2xl transition-colors"
+                            >
+                              <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                                <CalendarPlus className="w-4 h-4" />
+                              </div>
+                              Apple / Outlook (.ics)
+                            </button>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
                   </div>
                 </motion.div>
               </div>
