@@ -73,13 +73,13 @@ export function HeroSection() {
           transition={{ delay: 0.2, duration: 1.2, ease: "easeOut" }}
         >
           <span className={`block text-primary drop-shadow-lg ${language === "tamil" ? "font-tamil-thin font-light tracking-wide" : "font-serif font-light tracking-wide"}`}>
-            {language === "tamil" ? couple.bride.nameTamil : couple.bride.name}
+            {language === "tamil" ? couple.groom.nameTamil : couple.groom.name}
           </span>
           <span className="text-[var(--golden-green)] text-3xl md:text-5xl font-light drop-shadow-md inline-block mx-4">
             &
           </span>
           <span className={`block text-primary drop-shadow-lg ${language === "tamil" ? "font-tamil-thin font-light tracking-wide" : "font-serif font-light tracking-wide"}`}>
-            {language === "tamil" ? couple.groom.nameTamil : couple.groom.name}
+            {language === "tamil" ? couple.bride.nameTamil : couple.bride.name}
           </span>
         </motion.h1>
 

@@ -58,7 +58,7 @@ export function ContactSection() {
 
         {/* Contact Cards */}
         <motion.div 
-          className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8"
+          className="flex flex-wrap justify-center gap-8"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-50px" }}
@@ -69,7 +69,7 @@ export function ContactSection() {
               key={index}
               variants={itemVariants}
               whileHover={{ y: -8, scale: 1.02 }}
-              className="glass-panel rounded-3xl p-8 text-center flex flex-col items-center justify-center transition-all duration-300"
+              className="glass-panel rounded-3xl p-8 text-center flex flex-col items-center justify-center transition-all duration-300 min-w-[320px]"
             >
               <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-primary/10 flex items-center justify-center shadow-inner">
                 <Phone className="w-6 h-6 text-primary" />

@@ -55,8 +55,8 @@ export function Navigation() {
               className={`font-serif text-2xl text-primary hover:text-primary/80 transition-colors ${language === "tamil" ? "font-tamil-thin font-light" : "font-serif"}`}
             >
               {language === "tamil" 
-                ? `${weddingConfig.couple.bride.nameTamil[0]} & ${weddingConfig.couple.groom.nameTamil[0]}`
-                : `${weddingConfig.couple.bride.name[0]} & ${weddingConfig.couple.groom.name[0]}`
+                ? `${weddingConfig.couple.groom.nameTamil[0]} & ${weddingConfig.couple.bride.nameTamil[0]}`
+                : `${weddingConfig.couple.groom.name[0]} & ${weddingConfig.couple.bride.name[0]}`
               }
             </a>
 

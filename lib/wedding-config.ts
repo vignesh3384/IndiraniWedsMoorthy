@@ -6,14 +6,6 @@
 export const weddingConfig = {
   // Couple Information
   couple: {
-    bride: {
-      name: "Santhiya",
-      nameTamil: "சந்தியா",
-      fullName: "Santhiya Balakrishanan",
-      fullNameTamil: "சந்தியா பாலகிருஷ்ணன்",
-      parents: "Mr. & Mrs. Balakrishanan",
-      parentsTamil: "திரு. & திருமதி. பாலகிருஷ்ணன்",
-    },
     groom: {
       name: "Dinesh",
       nameTamil: "தினேஷ்",
@@ -21,6 +13,14 @@ export const weddingConfig = {
       fullNameTamil: "தினேஷ் வேலு",
       parents: "Mr. & Mrs. Velu",
       parentsTamil: "திரு. & திருமதி. வேலு",
+    },
+    bride: {
+      name: "Santhiya",
+      nameTamil: "சந்தியா",
+      fullName: "Santhiya Balakrishanan",
+      fullNameTamil: "சந்தியா பாலகிருஷ்ணன்",
+      parents: "Mr. & Mrs. Balakrishanan",
+      parentsTamil: "திரு. & திருமதி. பாலகிருஷ்ணன்",
     },
   },
 
@@ -141,16 +141,10 @@ export const weddingConfig = {
       whatsapp: "+919080474078",
     },
     {
-      name: "Velu (Groom's Father)",
-      nameTamil: "வேலு (மணமகனின் தந்தை)",
-      phone: "+91 8056897254",
-      whatsapp: "+918056897254",
-    },
-    {
-      name: "Jayanthi (Groom's Mother)",
-      nameTamil: "ஜெயந்தி (மணமகனின் தாய்)",
-      phone: "+91 9003599514",
-      whatsapp: "+919003599514",
+      name: "Naveen (Bride's Brother)",
+      nameTamil: "நவீன் (மணமகளின் சகோதரர்)",
+      phone: "+91 9042334388",
+      whatsapp: "+919042334388",
     },
   ],
 
@@ -158,7 +152,7 @@ export const weddingConfig = {
   social: {
     instagram: "https://www.instagram.com/m_a_s_s__d_i_n_e_s_h/",
     //facebook: "",
-    hashtag: "#SanthiyaWedDinesh",
+    hashtag: "#DineshWedsSanthiya",
   },
 
   // Background Music (optional)

@@ -21,7 +21,7 @@ export function Footer() {
       <div className="relative z-10 max-w-4xl mx-auto text-center">
         {/* Couple Names */}
         <h2 className={`mb-4 ${language === "tamil" ? "font-kavivanar font-medium text-3xl md:text-4xl" : "font-vibes font-normal text-4xl md:text-5xl tracking-normal"}`}>
-          {language === "tamil" ? couple.bride.nameTamil : couple.bride.name} <span className="font-sans text-xl md:text-2xl px-2">&</span> {language === "tamil" ? couple.groom.nameTamil : couple.groom.name}
+          {language === "tamil" ? couple.groom.nameTamil : couple.groom.name} <span className="font-sans text-xl md:text-2xl px-2">&</span> {language === "tamil" ? couple.bride.nameTamil : couple.bride.name}
         </h2>
 
         {/* Wedding Date */}
@@ -51,7 +51,7 @@ export function Footer() {
         <p className="text-xs text-primary-foreground/70 font-medium">
           {language === "tamil"
             ? `© ${new Date().getFullYear()} | அன்புடன் உருவாக்கப்பட்டது`
-            : `© ${new Date().getFullYear()} | Made with 🤍 by Santhiya & Dinesh`}
+            : `© ${new Date().getFullYear()} | Made with 🤍 by Dinesh & Santhiya`}
         </p>
       </div>
     </footer>
