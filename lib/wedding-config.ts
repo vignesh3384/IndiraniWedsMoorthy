@@ -7,18 +7,18 @@ export const weddingConfig = {
   // Couple Information
   couple: {
     groom: {
-      name: "Dinesh",
-      nameTamil: "தினேஷ்",
-      fullName: "Dinesh Velu",
-      fullNameTamil: "தினேஷ் வேலு",
+      name: "Harish",
+      nameTamil: "ஹரிஷ்",
+      fullName: "Harish Velu",
+      fullNameTamil: "ஹரிஷ் வேலு",
       parents: "Mr. & Mrs. Velu",
       parentsTamil: "திரு. & திருமதி. வேலு",
     },
     bride: {
-      name: "Santhiya",
-      nameTamil: "சந்தியா",
-      fullName: "Santhiya Balakrishanan",
-      fullNameTamil: "சந்தியா பாலகிருஷ்ணன்",
+      name: "Aishu",
+      nameTamil: "ஐஷு",
+      fullName: "Aishu Balakrishanan",
+      fullNameTamil: "ஐஷு பாலகிருஷ்ணன்",
       parents: "Mr. & Mrs. Balakrishanan",
       parentsTamil: "திரு. & திருமதி. பாலகிருஷ்ணன்",
     },
@@ -123,20 +123,20 @@ export const weddingConfig = {
     directions: [
       "From Polur Bustand: 1 km (approximately 10 minutes walk)",
       "From Polur market: 400 m (approximately 3 minutes walk)",
-      "Landmark: Backside Dinesh House",
+      "Landmark: Backside Harish House",
     ],
     directionsTamil: [
       "போலூர் பேருந்து நிலையத்திலிருந்து: 1 கி.மீ (சுமார் 10 நிமிட நடைப்பயணம்)",
       "போலூர் சந்தையிலிருந்து: 400 மீ (சுமார் 3 நிமிட நடைப்பயணம்)",
-      "அடையாள இடம்: தினேஷ் வீட்டின் பின்புறம்",
+      "அடையாள இடம்: ஹரிஷ் வீட்டின் பின்புறம்",
     ],
   },
 
   // Contact Information
   contacts: [
     {
-      name: "Dinesh (Groom)",
-      nameTamil: "தினேஷ் (மணமகன்)",
+      name: "Harish (Groom)",
+      nameTamil: "ஹரிஷ் (மணமகன்)",
       phone: "+91 9080474078",
       whatsapp: "+919080474078",
     },
@@ -152,7 +152,7 @@ export const weddingConfig = {
   social: {
     instagram: "https://www.instagram.com/m_a_s_s__d_i_n_e_s_h/",
     //facebook: "",
-    hashtag: "#DineshWedsSanthiya",
+    hashtag: "#HarishWedsAishu",
   },
 
   // Background Music (optional)
