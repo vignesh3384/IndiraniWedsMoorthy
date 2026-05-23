@@ -16,9 +16,9 @@ export const weddingConfig = {
     },
     bride: {
       name: "Indirani",
-      nameTamil: "கோ.இந்திராணி",
+      nameTamil: "இந்திராணி",
       fullName: "Indirani",
-      fullNameTamil: "கோ.இந்திராணி",
+      fullNameTamil: "இந்திராணி",
       parents: "Mr. & Mrs. GopalaKrishnan & Nagamuthu",
       parentsTamil: "திரு. & திருமதி. S.கோபாலகிருஷ்ணன் & G.நாகமுத்து",
     },
