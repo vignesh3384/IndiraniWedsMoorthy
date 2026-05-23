@@ -9,14 +9,12 @@ const navItems = {
   english: [
     { href: "#home", label: "Home" },
     { href: "#events", label: "Events" },
-    { href: "#gallery", label: "Gallery" },
     { href: "#venue", label: "Venue" },
     { href: "#contact", label: "Contact" },
   ],
   tamil: [
     { href: "#home", label: "முகப்பு" },
     { href: "#events", label: "நிகழ்வுகள்" },
-    { href: "#gallery", label: "கேலரி" },
     { href: "#venue", label: "இடம்" },
     { href: "#contact", label: "தொடர்பு" },
   ],

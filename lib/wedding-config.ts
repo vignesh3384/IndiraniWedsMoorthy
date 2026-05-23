@@ -7,25 +7,25 @@ export const weddingConfig = {
   // Couple Information
   couple: {
     groom: {
-      name: "Harish",
-      nameTamil: "ஹரிஷ்",
-      fullName: "Harish Velu",
+      name: "Narayana Moorthy",
+      nameTamil: "நாராயண மூர்த்தி",
+      fullName: "Narayana Moorthy",
       fullNameTamil: "ஹரிஷ் வேலு",
-      parents: "Mr. & Mrs. Velu",
-      parentsTamil: "திரு. & திருமதி. வேலு",
+      parents: "Mr. & Mrs. N.Arumugam & A.Selvi",
+      parentsTamil: "திரு. & திருமதி. நா.ஆறுமுகம் & ஆ.செல்வி",
     },
     bride: {
-      name: "Aishu",
-      nameTamil: "ஐஷு",
-      fullName: "Aishu Balakrishanan",
-      fullNameTamil: "ஐஷு பாலகிருஷ்ணன்",
-      parents: "Mr. & Mrs. Balakrishanan",
-      parentsTamil: "திரு. & திருமதி. பாலகிருஷ்ணன்",
+      name: "Indirani",
+      nameTamil: "கோ.இந்திராணி",
+      fullName: "Indirani",
+      fullNameTamil: "கோ.இந்திராணி",
+      parents: "Mr. & Mrs. GopalaKrishnan & Nagamuthu",
+      parentsTamil: "திரு. & திருமதி. S.கோபாலகிருஷ்ணன் & G.நாகமுத்து",
     },
   },
 
   // Wedding Date (YYYY, MM-1, DD, HH, MM) - Month is 0-indexed
-  weddingDate: new Date(2026, 3, 20, 6, 0), // June 15, 2026 at 9:00 AM
+  weddingDate: new Date(2026, 5, 17, 9, 0), // June 17, 2026 at 9:00 AM
 
   // Tagline
   tagline: "Together with their families",
@@ -34,36 +34,36 @@ export const weddingConfig = {
   // Events
   events: [
     {
-      id: "reception",
-      title: "Reception",
-      titleTamil: "வரவேற்பு",
-      date: "April 19, 2026",
-      dateTamil: "ஏப்ரல் 19, 2026",
-      time: "6:00 PM - 10:00 PM",
-      timeTamil: "மாலை 6:00 - இரவு 10:00",
-      venue: "R. G. Sakthi Mahal",
-      venueTamil: "ஆர். ஜி. சக்தி மஹால்",
-      address: "45, Govinda Swamy St, Polur, Tamil Nadu 606803",
-      addressTamil: "45, கோவிந்த சுவாமி தெரு, போலூர், தமிழ்நாடு 606803",
-      description: "Join us for an evening of celebration, music, and dance",
-      descriptionTamil: "கொண்டாட்டம், இசை மற்றும் நடனத்தின் ஒரு மாலை எங்களுடன் இணையுங்கள்",
-      mapUrl: "https://maps.app.goo.gl/FhWCET5JoYqqUcW56",
-    },
-    {
       id: "wedding",
       title: "Wedding Ceremony",
       titleTamil: "திருமண நிகழ்ச்சி",
-      date: "April 20, 2026",
-      dateTamil: "ஏப்ரல் 20, 2026",
-      time: "Muhurtam: 6:00 AM - 7:30 AM",
-      timeTamil: "முகூர்த்தம்: காலை 6:00 - காலை 7:30",
-      venue: "R. G. Sakthi Mahal",
-      venueTamil: "ஆர். ஜி. சக்தி மஹால்",
-      address: "45, Govinda Swamy St, Polur, Tamil Nadu 606803",
-      addressTamil: "45, கோவிந்த சுவாமி தெரு, போலூர், தமிழ்நாடு 606803",
+      date: "June 17",
+      dateTamil: "ஜூன் 17",
+      time: "9:00 AM - 10:00 AM",
+      timeTamil: "காலை 9:00 - காலை 10:00",
+      venue: "Bajanai Mandabam",
+      venueTamil: "பஜனை மண்டபம்",
+      address: "East Car St, Tiruchendur, Tamil Nadu 628215",
+      addressTamil: "கிழக்கு ரத வீதி, திருச்செந்தூர், தமிழ்நாடு 628215",
       description: "The auspicious wedding ceremony with traditional Tamil rituals",
       descriptionTamil: "பாரம்பரிய தமிழ் சடங்குகளுடன் மங்கலகரமான திருமண விழா",
-      mapUrl: "https://maps.app.goo.gl/FhWCET5JoYqqUcW56",
+      mapUrl: "https://maps.app.goo.gl/YzvgMTYvyKedsDLx8",
+    },
+    {
+      id: "reception",
+      title: "Reception",
+      titleTamil: "வரவேற்பு",
+      date: "June 21",
+      dateTamil: "ஜூன் 21",
+      time: "6:00 PM onwards",
+      timeTamil: "மாலை 6:00 மணி முதல்",
+      venue: "Sri Padma Ram Ganesh Mahal (Sri Ganapathy Hall)",
+      venueTamil: "ஸ்ரீ பத்மா ராம் கணேஷ் மஹால் (ஸ்ரீ கணபதி ஹால்)",
+      address: "Dr Rajendra Prasad Rd, Nehru Nagar, Chromepet, Chennai, Tamil Nadu 600044",
+      addressTamil: "டாக்டர் ராஜேந்திர பிரசாத் சாலை, நேரு நகர், குரோம்பேட்டை, சென்னை, தமிழ்நாடு 600044",
+      description: "Join us for an evening of celebration, music, and dance",
+      descriptionTamil: "கொண்டாட்டம், இசை மற்றும் நடனத்தின் ஒரு மாலை எங்களுடன் இணையுங்கள்",
+      mapUrl: "https://maps.app.goo.gl/3jQVparTj1QNqbR47",
     },
   ],
 
@@ -100,59 +100,45 @@ export const weddingConfig = {
   ],
 
   // Gallery Images
-  gallery: [
-    { id: 1, src: "/gallery/center_image.png", alt: "Couple central portrait" },
-    { id: 2, src: "/gallery/download.png", alt: "Watercolor exact couple portrait" },
-    { id: 3, src: "/gallery/sketch.png", alt: "Pencil sketch couple portrait" },
-    { id: 4, src: "/gallery/anime.png", alt: "Anime style couple portrait" },
-    { id: 5, src: "/gallery/popart.png", alt: "Pop art style couple portrait" },
-  ],
+  gallery: [],
 
   // Venue Details
-  venue: {
-    name: "R. G. Sakthi Mahal",
-    nameTamil: "ஆர். ஜி. சக்தி மஹால்",
-    address: "45, Govinda Swamy St, Polur, Tamil Nadu 606803",
-    addressTamil: "45, கோவிந்த சுவாமி தெரு, போலூர், தமிழ்நாடு 606803",
-    phone: "+91 90804 74078",
-    mapEmbedUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3895.031594035164!2d79.11864746350793!3d12.51406486659244!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bacd947e0777e07%3A0x2db6446f5e573435!2sR.%20G.%20Sakthi%20Mahal!5e0!3m2!1sen!2sin!4v1774328261935!5m2!1sen!2sin",
-    coordinates: {
-      lat: 13.0827,
-      lng: 80.2707,
+  venues: [
+    {
+      id: "wedding",
+      name: "Bajanai Mandabam",
+      nameTamil: "பஜனை மண்டபம்",
+      address: "East Car St, Tiruchendur, Tamil Nadu 628215",
+      addressTamil: "கிழக்கு ரத வீதி, திருச்செந்தூர், தமிழ்நாடு 628215",
+      mapEmbedUrl: "https://maps.google.com/maps?q=Bajanai%20Mandabam,%20East%20Car%20St,%20Tiruchendur,%20Tamil%20Nadu%20628215&t=&z=15&ie=UTF8&iwloc=&output=embed",
+      mapUrl: "https://maps.app.goo.gl/YzvgMTYvyKedsDLx8",
     },
-    directions: [
-      "From Polur Bustand: 1 km (approximately 10 minutes walk)",
-      "From Polur market: 400 m (approximately 3 minutes walk)",
-      "Landmark: Backside Harish House",
-    ],
-    directionsTamil: [
-      "போலூர் பேருந்து நிலையத்திலிருந்து: 1 கி.மீ (சுமார் 10 நிமிட நடைப்பயணம்)",
-      "போலூர் சந்தையிலிருந்து: 400 மீ (சுமார் 3 நிமிட நடைப்பயணம்)",
-      "அடையாள இடம்: ஹரிஷ் வீட்டின் பின்புறம்",
-    ],
-  },
+    {
+      id: "reception",
+      name: "Sri Padma Ram Ganesh Mahal (Sri Ganapathy Hall)",
+      nameTamil: "ஸ்ரீ பத்மா ராம் கணேஷ் மஹால் (ஸ்ரீ கணபதி ஹால்)",
+      address: "Dr Rajendra Prasad Rd, Nehru Nagar, Chromepet, Chennai, Tamil Nadu 600044",
+      addressTamil: "டாக்டர் ராஜேந்திர பிரசாத் சாலை, நேரு நகர், குரோம்பேட்டை, சென்னை, தமிழ்நாடு 600044",
+      mapEmbedUrl: "https://maps.google.com/maps?q=Sri%20Padma%20Ram%20Ganesh%20Mahal,%20Nehru%20Nagar,%20Chromepet,%20Chennai,%20Tamil%20Nadu%20600044&t=&z=15&ie=UTF8&iwloc=&output=embed",
+      mapUrl: "https://maps.app.goo.gl/3jQVparTj1QNqbR47",
+    },
+  ],
 
   // Contact Information
   contacts: [
     {
-      name: "Harish (Groom)",
-      nameTamil: "ஹரிஷ் (மணமகன்)",
-      phone: "+91 9080474078",
-      whatsapp: "+919080474078",
-    },
-    {
-      name: "Naveen (Bride's Brother)",
-      nameTamil: "நவீன் (மணமகளின் சகோதரர்)",
-      phone: "+91 9042334388",
-      whatsapp: "+919042334388",
+      name: "Narayana Moorthy (Groom)",
+      nameTamil: "ஆ.நாராயண மூர்த்தி (மணமகன்)",
+      phone: "+91 9551611562",
+      whatsapp: "+919551611562",
     },
   ],
 
   // Social Media (optional)
   social: {
-    instagram: "https://www.instagram.com/m_a_s_s__d_i_n_e_s_h/",
+    instagram: "https://www.instagram.com/narayanamoorthy29/",
     //facebook: "",
-    hashtag: "#HarishWedsAishu",
+    hashtag: "#NarayanaMoorthyWedsIndirani",
   },
 
   // Background Music (optional)

@@ -3,11 +3,11 @@
 import { weddingConfig } from "@/lib/wedding-config";
 import { useLanguage } from "./language-provider";
 import { SectionDivider } from "./decorative-elements";
-import { MapPin, Phone, Navigation } from "lucide-react";
+import { MapPin, Navigation } from "lucide-react";
 
 export function VenueSection() {
   const { language } = useLanguage();
-  const { venue } = weddingConfig;
+  const { venues } = weddingConfig;
 
   return (
     <section id="venue" className="py-20 px-4 relative overflow-hidden">
@@ -22,7 +22,7 @@ export function VenueSection() {
         {/* Section Header */}
         <div className="text-center mb-16">
           <h2 className="font-serif text-4xl md:text-5xl text-primary mb-4">
-            {language === "tamil" ? "திருமண இடம்" : "Wedding Venue"}
+            {language === "tamil" ? "திருமண & வரவேற்பு இடங்கள்" : "Wedding & Reception Venues"}
           </h2>
           <p className="text-foreground font-medium drop-shadow-sm">
             {language === "tamil"
@@ -31,78 +31,65 @@ export function VenueSection() {
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-8">
-          {/* Map */}
-          <div className="rounded-xl overflow-hidden border border-border h-[400px]">
-            <iframe
-              src={venue.mapEmbedUrl}
-              width="100%"
-              height="100%"
-              style={{ border: 0 }}
-              allowFullScreen
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              title="Wedding Venue Map"
-            />
-          </div>
-
-          {/* Venue Details */}
-          <div className="space-y-6">
-            <div className="bg-card rounded-xl border border-border p-6">
-              <h3 className="font-serif text-2xl text-primary mb-4">
-                {language === "tamil" ? venue.nameTamil : venue.name}
+        <div className="space-y-16">
+          {venues.map((venue) => (
+            <div key={venue.id} className="space-y-4 bg-card/40 backdrop-blur-sm rounded-2xl border border-border p-6 md:p-8">
+              <h3 className="font-serif text-2xl md:text-3xl text-secondary border-b border-border/60 pb-2 mb-6">
+                {language === "tamil" 
+                  ? (venue.id === "wedding" ? "திருமண மண்டபம்" : "வரவேற்பு மண்டபம்")
+                  : (venue.id === "wedding" ? "Wedding Venue" : "Reception Venue")}
               </h3>
-
-              <div className="space-y-4">
-                <div className="flex items-start gap-3">
-                  <MapPin className="w-5 h-5 text-secondary mt-0.5 flex-shrink-0" />
-                  <p className="text-foreground">
-                    {language === "tamil" ? venue.addressTamil : venue.address}
-                  </p>
+              
+              <div className="grid lg:grid-cols-2 gap-8">
+                {/* Map */}
+                <div className="rounded-xl overflow-hidden border border-border h-[300px] md:h-[350px] bg-muted/20">
+                  <iframe
+                    src={venue.mapEmbedUrl}
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title={`${venue.name} Map`}
+                  />
                 </div>
 
-                <div className="flex items-start gap-3">
-                  <Phone className="w-5 h-5 text-secondary mt-0.5 flex-shrink-0" />
-                  <a
-                    href={`tel:${venue.phone}`}
-                    className="text-foreground hover:text-primary transition-colors"
-                  >
-                    {venue.phone}
-                  </a>
+                {/* Venue Details */}
+                <div className="flex flex-col justify-between">
+                  <div className="space-y-6">
+                    <h4 className="font-serif text-2xl text-primary font-bold">
+                      {language === "tamil" ? venue.nameTamil : venue.name}
+                    </h4>
+
+                    <div className="space-y-4">
+                      <div className="flex items-start gap-3">
+                        <MapPin className="w-5 h-5 text-secondary mt-1 flex-shrink-0" />
+                        <p className="text-foreground text-base md:text-lg">
+                          {language === "tamil" ? venue.addressTamil : venue.address}
+                        </p>
+                      </div>
+
+
+                    </div>
+                  </div>
+
+                  {/* Get Directions Button */}
+                  <div className="mt-8">
+                    <a
+                      href={venue.mapUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors shadow-md hover:shadow-lg hover:scale-[1.02] duration-200"
+                    >
+                      <Navigation className="w-4 h-4" />
+                      {language === "tamil" ? "வழிகள் பெறுக" : "Get Directions"}
+                    </a>
+                  </div>
                 </div>
               </div>
-
-              {/* Get Directions Button */}
-              <a
-                href={`https://www.google.com/maps/dir/?api=1&destination=${venue.coordinates.lat},${venue.coordinates.lng}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 mt-6 px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
-              >
-                <Navigation className="w-4 h-4" />
-                {language === "tamil" ? "வழிகள் பெறுக" : "Get Directions"}
-              </a>
             </div>
-
-            {/* Directions List */}
-            <div className="bg-card rounded-xl border border-border p-6">
-              <h4 className="font-serif text-lg text-primary mb-4">
-                {language === "tamil" ? "எப்படி அடைவது" : "How to Reach"}
-              </h4>
-              <ul className="space-y-3">
-                {(language === "tamil" ? venue.directionsTamil : venue.directions).map(
-                  (direction, index) => (
-                    <li key={index} className="flex items-start gap-3">
-                      <span className="w-6 h-6 rounded-full bg-secondary/20 text-secondary-foreground text-xs flex items-center justify-center flex-shrink-0 mt-0.5">
-                        {index + 1}
-                      </span>
-                      <p className="text-foreground font-medium text-sm">{direction}</p>
-                    </li>
-                  )
-                )}
-              </ul>
-            </div>
-          </div>
+          ))}
         </div>
 
         <SectionDivider className="mt-16" />

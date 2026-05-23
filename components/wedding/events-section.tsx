@@ -8,32 +8,24 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 
 // Helper to format dates for Calendar services (YYYYMMDDTHHmmSSZ)
-const formatCalendarDate = (dateStr: string, timeStr: string, isEnd: boolean = false) => {
-  // Parsing specific formats from wedding-config.ts
-  // Date: "April 19, 2026" or "April 20, 2026"
-  // Time: "6:00 PM - 10:00 PM" or "Muhurtam: 6:00 AM - 7:30 AM"
-
+const formatCalendarDate = (event: any, isEnd: boolean = false) => {
   const year = "2026";
-  const month = "04";
-  const day = dateStr.includes("20") ? "20" : "19";
-
-  let hour = "";
-  let minute = "00";
-
-  if (dateStr.includes("19")) {
-    // Reception: 6:00 PM - 10:00 PM
-    hour = isEnd ? "22" : "18";
+  
+  if (event.id === "wedding") {
+    // Wedding ceremony - June 17 2026 time 9AM to 10AM
+    const month = "06";
+    const day = "17";
+    const hour = isEnd ? "10" : "09";
+    const minute = "00";
+    return `${year}${month}${day}T${hour}${minute}00`;
   } else {
-    // Wedding: 6:00 AM - 7:30 AM
-    if (isEnd) {
-      hour = "07";
-      minute = "30";
-    } else {
-      hour = "06";
-    }
+    // Reception - June 21 2026 - 6PM onwards (say to 10PM)
+    const month = "06";
+    const day = "21";
+    const hour = isEnd ? "22" : "18";
+    const minute = "00";
+    return `${year}${month}${day}T${hour}${minute}00`;
   }
-
-  return `${year}${month}${day}T${hour}${minute}00`;
 };
 
 export function EventsSection() {
@@ -42,8 +34,8 @@ export function EventsSection() {
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
 
   const handleGoogleCalendar = (event: any) => {
-    const start = formatCalendarDate(event.date, event.time);
-    const end = formatCalendarDate(event.date, event.time, true);
+    const start = formatCalendarDate(event);
+    const end = formatCalendarDate(event, true);
     const details = language === "tamil" ? event.descriptionTamil : event.description;
     const location = language === "tamil" ? `${event.venueTamil}, ${event.addressTamil}` : `${event.venue}, ${event.address}`;
 
@@ -57,8 +49,8 @@ export function EventsSection() {
   };
 
   const handleICalDownload = (event: any) => {
-    const start = formatCalendarDate(event.date, event.time);
-    const end = formatCalendarDate(event.date, event.time, true);
+    const start = formatCalendarDate(event);
+    const end = formatCalendarDate(event, true);
     const title = language === "tamil" ? event.titleTamil : event.title;
     const location = language === "tamil" ? `${event.venueTamil}, ${event.addressTamil}` : `${event.venue}, ${event.address}`;
     const description = language === "tamil" ? event.descriptionTamil : event.description;
@@ -142,9 +134,9 @@ export function EventsSection() {
                 >
                   <div className="aspect-[4/5] relative rounded-[4rem] overflow-hidden shadow-2xl border-4 border-white dark:border-white/10 ring-1 ring-primary/20">
                     <img 
-                      src={index === 0 
-                        ? "/images/reception-anime.jpg" 
-                        : "/images/wedding-ceremony-south.jpg"} 
+                      src={event.id === "wedding" 
+                        ? "/images/wedding-ceremony-south.jpg" 
+                        : "/images/reception-anime.jpg"} 
                       alt={event.title}
                       className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-110"
                     />
@@ -175,7 +167,9 @@ export function EventsSection() {
                 >
                   <div className="space-y-2">
                     <span className="text-secondary font-bold text-lg tracking-widest uppercase block mb-2">
-                      {language === "tamil" ? (index === 0 ? "வரவேற்பு" : "திருமணம்") : (index === 0 ? "Reception" : "Muhurtam")}
+                      {language === "tamil" 
+                        ? (event.id === "reception" ? "வரவேற்பு" : "திருமணம்") 
+                        : (event.id === "reception" ? "Reception" : "Muhurtam")}
                     </span>
                     <h3 className="font-serif text-4xl md:text-5xl text-primary leading-tight">
                       {language === "tamil" ? event.titleTamil : event.title}

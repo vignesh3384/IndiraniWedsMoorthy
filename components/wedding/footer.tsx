@@ -51,7 +51,7 @@ export function Footer() {
         <p className="text-xs text-primary-foreground/70 font-medium">
           {language === "tamil"
             ? `© ${new Date().getFullYear()} | அன்புடன் உருவாக்கப்பட்டது`
-            : `© ${new Date().getFullYear()} | Made with 🤍 by Harish & Aishu`}
+            : `© ${new Date().getFullYear()} | Made with 🤍 by Narayana Moorthy & Indirani`}
         </p>
       </div>
     </footer>

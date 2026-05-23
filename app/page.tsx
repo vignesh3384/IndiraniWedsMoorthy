@@ -5,7 +5,6 @@ import { Navigation } from "@/components/wedding/navigation";
 import { motion } from "framer-motion";
 import { HeroSection } from "@/components/wedding/hero-section";
 import { EventsSection } from "@/components/wedding/events-section";
-import { GallerySection } from "@/components/wedding/gallery-section";
 import { VenueSection } from "@/components/wedding/venue-section";
 import { ContactSection } from "@/components/wedding/contact-section";
 import { Footer } from "@/components/wedding/footer";
@@ -24,7 +23,6 @@ export default function WeddingPage() {
         <Navigation />
         <HeroSection />
         <EventsSection />
-        <GallerySection />
         <VenueSection />
         <ContactSection />
         <Footer />
