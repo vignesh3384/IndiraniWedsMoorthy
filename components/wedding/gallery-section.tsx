@@ -35,7 +35,7 @@ export function GallerySection() {
   };
 
   return (
-    <section id="gallery" className="py-20 px-4 bg-card relative overflow-hidden">
+    <section id="gallery" className="py-14 px-4 bg-card relative overflow-hidden">
       {/* Background Image */}
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-30"
@@ -43,10 +43,10 @@ export function GallerySection() {
       />
       <div className="absolute inset-0 bg-background/80" />
 
-      <div className="max-w-6xl mx-auto relative z-10">
+      <div className="max-w-4xl mx-auto relative z-10">
         {/* Section Header */}
         <motion.div 
-          className="text-center mb-16"
+          className="text-center mb-8"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
@@ -62,59 +62,32 @@ export function GallerySection() {
           </p>
         </motion.div>
 
-        {/* Complex Gallery Layout */}
+        {/* Responsive Masonry Gallery Layout */}
         <motion.div 
-          className="relative glass-panel bg-white/40 dark:bg-black/40 p-2 md:p-4 rounded-3xl overflow-hidden mt-8"
+          className="relative glass-panel bg-white/40 dark:bg-black/40 p-4 md:p-6 rounded-3xl overflow-hidden mt-8"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 1, delay: 0.2 }}
         >
-          {/* Left Gradient Overlay - Removed to let glass panel shine */}
-          
-          {/* Right Gradient Overlay - Removed to let glass panel shine */}
+          <div className="columns-1 sm:columns-2 md:columns-3 gap-4 [column-fill:_balance] box-border">
+            {gallery.map((_, idx) => {
+              // Alternate aspect ratios beautifully to showcase the couple clearly without cropping faces
+              const aspectClass = 
+                idx % 3 === 0 ? "aspect-[4/5]" : 
+                idx % 3 === 1 ? "aspect-square" : 
+                "aspect-[3/2]";
 
-
-
-          {/* Masonry Columns */}
-          <div className="flex gap-2 md:gap-4 h-[500px] md:h-[700px]">
-            
-            {/* Column 1 */}
-            <div className="flex flex-col gap-2 md:gap-4 flex-1">
-              <GalleryItem index={1} className="h-[30%]" onClick={() => openLightbox(1)} />
-              <GalleryItem index={2} className="flex-1" onClick={() => openLightbox(2)} />
-              <GalleryItem index={3} className="h-[30%]" onClick={() => openLightbox(3)} />
-            </div>
-
-            {/* Column 2 */}
-            <div className="flex flex-col gap-2 md:gap-4 flex-1 -mt-4 mb-4">
-              <GalleryItem index={4} className="flex-1" onClick={() => openLightbox(4)} />
-              <GalleryItem index={0} className="h-[25%]" onClick={() => openLightbox(0)} />
-              <GalleryItem index={1} className="flex-1" onClick={() => openLightbox(1)} />
-            </div>
-
-            {/* Column 3 (Centerpiece) */}
-            <div className="flex flex-col gap-2 md:gap-4 flex-1.5 pt-4 pb-4">
-              <GalleryItem 
-                index={0} 
-                className="flex-1 ring-2 ring-primary/20 shadow-2xl scale-[1.02]" 
-                onClick={() => openLightbox(0)} 
-              />
-            </div>
-
-            {/* Column 4 */}
-            <div className="flex flex-col gap-2 md:gap-4 flex-1 mt-4 -mb-4">
-              <GalleryItem index={2} className="h-[25%]" onClick={() => openLightbox(2)} />
-              <GalleryItem index={3} className="flex-1" onClick={() => openLightbox(3)} />
-              <GalleryItem index={4} className="h-[35%]" onClick={() => openLightbox(4)} />
-            </div>
-
-            {/* Column 5 */}
-            <div className="flex flex-col gap-2 md:gap-4 flex-1">
-              <GalleryItem index={0} className="h-[35%]" onClick={() => openLightbox(0)} />
-              <GalleryItem index={1} className="flex-1" onClick={() => openLightbox(1)} />
-              <GalleryItem index={2} className="h-[25%]" onClick={() => openLightbox(2)} />
-            </div>
+              return (
+                <div key={idx} className="break-inside-avoid mb-4 overflow-hidden rounded-md">
+                  <GalleryItem 
+                    index={idx} 
+                    className={`w-full ${aspectClass}`} 
+                    onClick={() => openLightbox(idx)} 
+                  />
+                </div>
+              );
+            })}
           </div>
         </motion.div>
 
@@ -196,15 +169,14 @@ function GalleryItem({ index, className, onClick }: { index: number; className?:
         zIndex: 10
       }}
     >
-      <div 
-        className="absolute inset-0 bg-cover bg-no-repeat transition-transform duration-700 group-hover:scale-110"
-        style={{ 
-          backgroundImage: `url('${image.src}')`,
-          backgroundPosition: "center 15%" 
-        }}
+      <img 
+        src={image.src}
+        alt={image.alt}
+        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+        style={{ objectPosition: "center" }}
       />
-      <div className="absolute inset-0 bg-primary/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-        <span className="text-primary-foreground text-xs md:text-sm font-medium tracking-widest uppercase backdrop-blur-sm px-4 py-2 rounded-full border border-white/30">
+      <div className="absolute inset-0 bg-gradient-to-t from-primary/60 via-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+        <span className="text-primary-foreground text-xs md:text-sm font-semibold tracking-widest uppercase backdrop-blur-md bg-white/10 px-5 py-2.5 rounded-full border border-white/40 shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
           {language === "tamil" ? "பார்க்க" : "View"}
         </span>
       </div>

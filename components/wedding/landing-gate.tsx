@@ -97,6 +97,8 @@ export function LandingGate({ onEnter }: LandingGateProps) {
   const [isMounted, setIsMounted] = useState(false);
   const [isGlowing, setIsGlowing] = useState(false);
   const [ripples, setRipples] = useState<{ id: number; x: number; y: number }[]>([]);
+  const [heartBurst, setHeartBurst] = useState(false);
+  const [isHeartPressed, setIsHeartPressed] = useState(false);
   const rippleCounter = useRef(0);
   const hasClickedRef = useRef(false);
 
@@ -136,8 +138,9 @@ export function LandingGate({ onEnter }: LandingGateProps) {
     return () => clearTimeout(t);
   }, []);
 
-  const handleClick = useCallback(
-    (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleHeartClick = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.stopPropagation();
       if (hasClickedRef.current || isExiting) return;
       hasClickedRef.current = true;
 
@@ -147,16 +150,20 @@ export function LandingGate({ onEnter }: LandingGateProps) {
       const y = e.clientY;
       setRipples((prev) => [...prev, { id, x, y }]);
 
-      // Haptic feedback on mobile
-      if (navigator.vibrate) navigator.vibrate([40, 20, 60]);
+      // Heart burst + press effect
+      setIsHeartPressed(true);
+      setHeartBurst(true);
 
-      setTimeout(() => setIsExiting(true), 200);
-      setTimeout(() => onEnter(), 1400);
+      // Haptic feedback on mobile
+      if (navigator.vibrate) navigator.vibrate([30, 15, 80, 15, 40]);
+
+      setTimeout(() => setIsExiting(true), 400);
+      setTimeout(() => onEnter(), 1600);
     },
     [isExiting, onEnter]
   );
 
-  const formattedDate = weddingDate.toLocaleDateString("ta-IN", {
+  const formattedDate = weddingDate.toLocaleDateString("en-IN", {
     year: "numeric",
     month: "long",
     day: "numeric",
@@ -164,13 +171,11 @@ export function LandingGate({ onEnter }: LandingGateProps) {
 
   return (
     <div
-      onClick={handleClick}
       className={`landing-gate-wrapper ${isMounted ? "gate-mounted" : ""} ${isExiting ? "gate-exiting" : ""}`}
       style={{
         position: "fixed",
         inset: 0,
         zIndex: 9999,
-        cursor: "pointer",
         userSelect: "none",
         overflow: "hidden",
         background: "radial-gradient(ellipse at 50% 40%, #2a0810 0%, #160306 40%, #0a0204 100%)",
@@ -337,7 +342,7 @@ export function LandingGate({ onEnter }: LandingGateProps) {
             textTransform: "uppercase",
           }}
         >
-          திருமண அழைப்பிதழ்
+          Wedding Invitation
         </p>
 
         {/* Temple lamp */}
@@ -371,7 +376,7 @@ export function LandingGate({ onEnter }: LandingGateProps) {
               display: "block",
             }}
           >
-            {couple.groom.nameTamil}
+            {couple.groom.name}
           </span>
         </div>
 
@@ -409,7 +414,7 @@ export function LandingGate({ onEnter }: LandingGateProps) {
               display: "block",
             }}
           >
-            {couple.bride.nameTamil}
+            {couple.bride.name}
           </span>
         </div>
 
@@ -435,42 +440,164 @@ export function LandingGate({ onEnter }: LandingGateProps) {
           {formattedDate}
         </p>
 
-        {/* Tap to open */}
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: 6,
-            animation: "tapPulse 2.5s ease-in-out 1.5s infinite",
-          }}
-        >
-          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+        {/* ── Heart Button ── */}
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 10 }}>
+          <button
+            id="heart-enter-btn"
+            onClick={handleHeartClick}
+            aria-label="Open wedding invitation"
+            style={{
+              position: "relative",
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              padding: 0,
+              outline: "none",
+              transform: isHeartPressed ? "scale(1.35)" : "scale(1)",
+              transition: "transform 0.25s cubic-bezier(0.34,1.56,0.64,1)",
+              filter: isHeartPressed
+                ? "drop-shadow(0 0 32px rgba(220,38,88,0.95)) drop-shadow(0 0 60px rgba(197,160,40,0.6))"
+                : "drop-shadow(0 0 14px rgba(220,38,88,0.55)) drop-shadow(0 0 28px rgba(154,27,50,0.4))",
+              animation: isHeartPressed ? "none" : "heartPulse 2s ease-in-out 2s infinite",
+            }}
+          >
+            {/* Heart SVG */}
+            <svg
+              width="clamp(60px,10vw,88px)"
+              height="clamp(60px,10vw,88px)"
+              viewBox="0 0 100 90"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              {/* Gradient definitions */}
+              <defs>
+                <radialGradient id="heartGrad" cx="50%" cy="35%" r="65%">
+                  <stop offset="0%" stopColor="#ff6b8a" />
+                  <stop offset="50%" stopColor="#dc2658" />
+                  <stop offset="100%" stopColor="#8b0b2e" />
+                </radialGradient>
+                <radialGradient id="heartSheen" cx="35%" cy="25%" r="50%">
+                  <stop offset="0%" stopColor="rgba(255,220,230,0.55)" />
+                  <stop offset="100%" stopColor="rgba(255,220,230,0)" />
+                </radialGradient>
+              </defs>
+              {/* Main heart */}
+              <path
+                d="M50 82 C50 82 8 54 8 28 C8 14 18 6 30 6 C38 6 45 10 50 16 C55 10 62 6 70 6 C82 6 92 14 92 28 C92 54 50 82 50 82Z"
+                fill="url(#heartGrad)"
+              />
+              {/* Sheen highlight */}
+              <path
+                d="M50 82 C50 82 8 54 8 28 C8 14 18 6 30 6 C38 6 45 10 50 16 C55 10 62 6 70 6 C82 6 92 14 92 28 C92 54 50 82 50 82Z"
+                fill="url(#heartSheen)"
+              />
+              {/* Gold border shimmer */}
+              <path
+                d="M50 82 C50 82 8 54 8 28 C8 14 18 6 30 6 C38 6 45 10 50 16 C55 10 62 6 70 6 C82 6 92 14 92 28 C92 54 50 82 50 82Z"
+                stroke="#c5a028"
+                strokeWidth="1.5"
+                fill="none"
+                opacity="0.6"
+              />
+              {/* Small decorative inner OM symbol */}
+              <text
+                x="50"
+                y="46"
+                textAnchor="middle"
+                fontFamily="serif"
+                fontSize="18"
+                fill="rgba(253,251,247,0.85)"
+                style={{ letterSpacing: 0 }}
+              >
+                ♥
+              </text>
+            </svg>
+
+            {/* Orbiting gold dots */}
+            <div
+              aria-hidden
+              style={{
+                position: "absolute",
+                inset: -12,
+                borderRadius: "50%",
+                animation: "heartOrbit 4s linear infinite",
+                pointerEvents: "none",
+              }}
+            >
+              {[0, 60, 120, 180, 240, 300].map((deg) => (
+                <div
+                  key={deg}
+                  style={{
+                    position: "absolute",
+                    width: 4,
+                    height: 4,
+                    borderRadius: "50%",
+                    background: "#c5a028",
+                    opacity: 0.7,
+                    top: "50%",
+                    left: "50%",
+                    transform: `rotate(${deg}deg) translateX(${"clamp(38px,6vw,52px)"}) translate(-50%,-50%)`,
+                  }}
+                />
+              ))}
+            </div>
+          </button>
+
+          {/* Label */}
+          <div style={{ display: "flex", alignItems: "center", gap: 8, animation: "tapPulse 2.5s ease-in-out 2s infinite" }}>
             <span style={{ fontSize: 10, color: "rgba(197,160,40,0.5)" }}>—</span>
             <span
               style={{
-                fontFamily: "var(--font-tamil-thin), serif",
+                fontFamily: "var(--font-sans), sans-serif",
                 fontSize: "clamp(10px, 1.5vw, 13px)",
                 color: "rgba(197,160,40,0.75)",
                 letterSpacing: "0.2em",
               }}
             >
-              தொட்டு திறக்கவும்
+              Tap to open
             </span>
             <span style={{ fontSize: 10, color: "rgba(197,160,40,0.5)" }}>—</span>
           </div>
-          <span
+        </div>
+
+        {/* ── Heart Burst Particles ── */}
+        {heartBurst && (
+          <div
+            aria-hidden
             style={{
-              fontFamily: "'Inter', sans-serif",
-              fontSize: "clamp(9px, 1.2vw, 11px)",
-              color: "rgba(197,160,40,0.45)",
-              letterSpacing: "0.25em",
-              textTransform: "uppercase",
+              position: "fixed",
+              inset: 0,
+              pointerEvents: "none",
+              zIndex: 10001,
             }}
           >
-            Tap anywhere to open
-          </span>
-        </div>
+            {Array.from({ length: 24 }, (_, i) => {
+              const angle = (i / 24) * 360;
+              const dist = 80 + Math.random() * 120;
+              return (
+                <div
+                  key={i}
+                  style={{
+                    position: "absolute",
+                    top: "50%",
+                    left: "50%",
+                    width: i % 3 === 0 ? 10 : 6,
+                    height: i % 3 === 0 ? 10 : 6,
+                    borderRadius: "50%",
+                    background: i % 2 === 0 ? "#dc2658" : "#c5a028",
+                    transform: "translate(-50%,-50%) scale(0)",
+                    animation: `heartBurstParticle 1s cubic-bezier(0.22,1,0.36,1) ${i * 0.015}s forwards`,
+                    // CSS custom props via inline style are not supported directly, use vars
+                    // We'll encode angle and dist in the animation name workaround:
+                    // Actually set via translateX/Y in keyframe — use multiple keyframe sets below
+                  }}
+                  // Encode direction via a wrapper transform set
+                  className={`hb-particle hb-${i}`}
+                />
+              );
+            })}
+          </div>
+        )}
       </div>
 
       {/* ── Bottom mango leaf decoration ── */}
@@ -500,15 +627,15 @@ export function LandingGate({ onEnter }: LandingGateProps) {
         ))}
       </div>
 
-      {/* ── White flash on exit ── */}
+      {/* ── Rose petal / flash exit overlay ── */}
       {isExiting && (
         <div
           aria-hidden
           style={{
             position: "absolute",
             inset: 0,
-            background: "#fdfbf7",
-            animation: "exitWhiteFlash 1.2s ease-out forwards",
+            background: "radial-gradient(ellipse at center, #fce4ec 0%, #dc2658 40%, #8b0b2e 70%, #160306 100%)",
+            animation: "exitRoseBloom 1.4s cubic-bezier(0.22,1,0.36,1) forwards",
             pointerEvents: "none",
             zIndex: 10000,
           }}
@@ -522,12 +649,17 @@ export function LandingGate({ onEnter }: LandingGateProps) {
           animation: gateReveal 1.2s ease-out 0.1s forwards;
         }
         .landing-gate-wrapper.gate-exiting {
-          animation: none !important;
+          animation: gateExitFade 1.4s ease-in forwards !important;
         }
 
         @keyframes gateReveal {
           from { opacity: 0; }
           to   { opacity: 1; }
+        }
+        @keyframes gateExitFade {
+          0%   { opacity: 1; transform: scale(1); }
+          60%  { opacity: 0.6; transform: scale(1.04); }
+          100% { opacity: 0; transform: scale(1.08); }
         }
         @keyframes contentReveal {
           from { opacity: 0; transform: translateY(28px); }
@@ -540,6 +672,14 @@ export function LandingGate({ onEnter }: LandingGateProps) {
         @keyframes tapPulse {
           0%, 100% { opacity: 1; transform: scale(1); }
           50%       { opacity: 0.5; transform: scale(0.97); }
+        }
+        @keyframes heartPulse {
+          0%, 100% { transform: scale(1);    filter: drop-shadow(0 0 14px rgba(220,38,88,0.55)) drop-shadow(0 0 28px rgba(154,27,50,0.4)); }
+          50%       { transform: scale(1.09); filter: drop-shadow(0 0 24px rgba(220,38,88,0.85)) drop-shadow(0 0 48px rgba(197,160,40,0.5)); }
+        }
+        @keyframes heartOrbit {
+          from { transform: rotate(0deg); }
+          to   { transform: rotate(360deg); }
         }
         @keyframes goldFloat {
           0%, 100% { transform: translateY(0px) translateX(0px); opacity: 0.4; }
@@ -556,14 +696,31 @@ export function LandingGate({ onEnter }: LandingGateProps) {
           from { transform: translate(-50%, -50%) scale(0);   opacity: 0.7; }
           to   { transform: translate(-50%, -50%) scale(60);  opacity: 0; }
         }
-        @keyframes exitWhiteFlash {
-          0%   { opacity: 0; }
-          30%  { opacity: 0.95; }
-          100% { opacity: 0; }
+        @keyframes exitRoseBloom {
+          0%   { opacity: 0;    transform: scale(0.6); border-radius: 50%; }
+          40%  { opacity: 1;    transform: scale(1.1); border-radius: 0; }
+          100% { opacity: 0;    transform: scale(1.2); }
         }
 
+        /* Heart burst — 24 directional particles */
+        ${Array.from({ length: 24 }, (_, i) => {
+        const angle = (i / 24) * 360;
+        const rad = angle * (Math.PI / 180);
+        const dist = 90 + (i % 4) * 30;
+        const tx = Math.cos(rad) * dist;
+        const ty = Math.sin(rad) * dist;
+        return `
+          @keyframes heartBurstParticle_${i} {
+            0%   { transform: translate(-50%,-50%) scale(0); opacity: 1; }
+            60%  { opacity: 1; }
+            100% { transform: translate(calc(-50% + ${tx}px), calc(-50% + ${ty}px)) scale(1.5); opacity: 0; }
+          }
+          .hb-${i} { animation-name: heartBurstParticle_${i} !important; }
+          `;
+      }).join('')}
+
         @media (max-width: 480px) {
-          .landing-gate-wrapper { cursor: pointer; }
+          .landing-gate-wrapper { cursor: default; }
         }
       `}</style>
     </div>

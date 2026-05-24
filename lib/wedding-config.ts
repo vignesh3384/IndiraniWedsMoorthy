@@ -13,6 +13,8 @@ export const weddingConfig = {
       fullNameTamil: "ஆ.நாராயண மூர்த்தி",
       parents: "Mr. & Mrs. N.Arumugam & A.Selvi",
       parentsTamil: "திரு. & திருமதி. நா.ஆறுமுகம் & ஆ.செல்வி",
+      initials: "N",
+      initialsTamil: "நா",
     },
     bride: {
       name: "G.Indirani",
@@ -21,6 +23,8 @@ export const weddingConfig = {
       fullNameTamil: "கோ.இந்திராணி",
       parents: "Mr. & Mrs. GopalaKrishnan & Nagamuthu",
       parentsTamil: "திரு. & திருமதி. S.கோபாலகிருஷ்ணன் & G.நாகமுத்து",
+      initials: "I",
+      initialsTamil: "இ",
     },
   },
 
@@ -100,7 +104,17 @@ export const weddingConfig = {
   ],
 
   // Gallery Images
-  gallery: [],
+  gallery: [
+    { src: "/gallery/img1.jpeg", alt: "Moment 1" },
+    { src: "/gallery/img2.jpeg", alt: "Moment 2" },
+    { src: "/gallery/img3.jpeg", alt: "Moment 3" },
+    { src: "/gallery/img4.jpeg", alt: "Moment 4" },
+    { src: "/gallery/img5.jpeg", alt: "Moment 5" },
+    { src: "/gallery/img6.jpeg", alt: "Moment 6" },
+    { src: "/gallery/img7.jpeg", alt: "Moment 7" },
+    { src: "/gallery/img8.jpeg", alt: "Moment 8" },
+    { src: "/gallery/img9.jpeg", alt: "Moment 9" },
+  ],
 
   // Venue Details
   venues: [
@@ -138,7 +152,7 @@ export const weddingConfig = {
   social: {
     instagram: "https://www.instagram.com/narayanamoorthy29/",
     //facebook: "",
-    hashtag: "#NarayanaMoorthyWedsIndirani",
+    hashtag: "#MoorthyWedsIndhu",
   },
 
   // Background Music (optional)
