@@ -7,18 +7,18 @@ export const weddingConfig = {
   // Couple Information
   couple: {
     groom: {
-      name: "Narayana Moorthy",
-      nameTamil: "நாராயண மூர்த்தி",
-      fullName: "Narayana Moorthy",
-      fullNameTamil: "ஹரிஷ் வேலு",
+      name: "A.Narayana Moorthy",
+      nameTamil: "ஆ.நாராயண மூர்த்தி",
+      fullName: "A.Narayana Moorthy",
+      fullNameTamil: "ஆ.நாராயண மூர்த்தி",
       parents: "Mr. & Mrs. N.Arumugam & A.Selvi",
       parentsTamil: "திரு. & திருமதி. நா.ஆறுமுகம் & ஆ.செல்வி",
     },
     bride: {
-      name: "Indirani",
-      nameTamil: "இந்திராணி",
-      fullName: "Indirani",
-      fullNameTamil: "இந்திராணி",
+      nname: "G.Indirani",
+      nameTamil: "கோ.இந்திராணி",
+      fullName: "G.Indirani",
+      fullNameTamil: "கோ.இந்திராணி",
       parents: "Mr. & Mrs. GopalaKrishnan & Nagamuthu",
       parentsTamil: "திரு. & திருமதி. S.கோபாலகிருஷ்ணன் & G.நாகமுத்து",
     },
