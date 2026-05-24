@@ -4,7 +4,11 @@ import { useState, useRef, useEffect } from "react";
 import { weddingConfig } from "@/lib/wedding-config";
 import { Volume2, VolumeX, Music } from "lucide-react";
 
-export function MusicPlayer() {
+interface MusicPlayerProps {
+  autoPlay?: boolean;
+}
+
+export function MusicPlayer({ autoPlay = false }: MusicPlayerProps) {
   const { music } = weddingConfig;
   const [isPlaying, setIsPlaying] = useState(false);
   const [showPrompt, setShowPrompt] = useState(true);
@@ -12,14 +16,27 @@ export function MusicPlayer() {
 
   useEffect(() => {
     if (audioRef.current) {
-      audioRef.current.volume = 0.13; // Reduced by 35% from previous 0.2
+      audioRef.current.volume = 0.13;
     }
-    // Hide prompt after user interacts
     const hidePrompt = () => {
       setTimeout(() => setShowPrompt(false), 5000);
     };
     hidePrompt();
   }, []);
+
+  // Auto-play when gate is passed (user has interacted with page)
+  useEffect(() => {
+    if (autoPlay && audioRef.current) {
+      const playPromise = audioRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => setIsPlaying(true))
+          .catch(() => {
+            // Browser blocked autoplay — user will use the button
+          });
+      }
+    }
+  }, [autoPlay]);
 
   if (!music.enabled) return null;
 
@@ -29,7 +46,6 @@ export function MusicPlayer() {
         audioRef.current.pause();
       } else {
         audioRef.current.play().catch(() => {
-          // Handle autoplay restrictions
           console.log("Audio playback requires user interaction");
         });
       }
@@ -41,11 +57,11 @@ export function MusicPlayer() {
   return (
     <>
       <audio ref={audioRef} src={music.src} loop preload="auto" />
-      
+
       {/* Music Toggle Button */}
       <div className="fixed bottom-6 left-6 z-40">
         {/* Prompt Tooltip */}
-        {showPrompt && (
+        {showPrompt && !isPlaying && (
           <div className="absolute bottom-full left-0 mb-2 whitespace-nowrap">
             <div className="bg-foreground text-background text-xs px-3 py-2 rounded-lg shadow-lg animate-pulse">
               <Music className="w-3 h-3 inline-block mr-1" />
@@ -53,7 +69,7 @@ export function MusicPlayer() {
             </div>
           </div>
         )}
-        
+
         <button
           onClick={toggleMusic}
           className={`p-3 rounded-full shadow-lg transition-all duration-300 ${
@@ -69,7 +85,7 @@ export function MusicPlayer() {
             <VolumeX className="w-5 h-5" />
           )}
         </button>
-        
+
         {/* Playing Indicator */}
         {isPlaying && (
           <div className="absolute -top-1 -right-1 w-3 h-3">
