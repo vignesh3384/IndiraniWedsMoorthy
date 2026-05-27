@@ -99,6 +99,7 @@ export function LandingGate({ onEnter }: LandingGateProps) {
   const [ripples, setRipples] = useState<{ id: number; x: number; y: number }[]>([]);
   const [heartBurst, setHeartBurst] = useState(false);
   const [isHeartPressed, setIsHeartPressed] = useState(false);
+  const [clickCoords, setClickCoords] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const rippleCounter = useRef(0);
   const hasClickedRef = useRef(false);
 
@@ -148,6 +149,7 @@ export function LandingGate({ onEnter }: LandingGateProps) {
       const x = e.clientX || (typeof window !== "undefined" ? window.innerWidth / 2 : 0);
       const y = e.clientY || (typeof window !== "undefined" ? window.innerHeight / 2 : 0);
       setRipples((prev) => [...prev, { id, x, y }]);
+      setClickCoords({ x, y });
 
       // Heart burst + press effect
       setIsHeartPressed(true);
@@ -573,28 +575,31 @@ export function LandingGate({ onEnter }: LandingGateProps) {
             }}
           >
             {Array.from({ length: 24 }, (_, i) => {
-              const angle = (i / 24) * 360;
-              const dist = 80 + Math.random() * 120;
               return (
                 <div
                   key={i}
                   style={{
                     position: "absolute",
-                    top: "50%",
-                    left: "50%",
-                    width: i % 3 === 0 ? 10 : 6,
-                    height: i % 3 === 0 ? 10 : 6,
-                    borderRadius: "50%",
-                    background: i % 2 === 0 ? "#dc2658" : "#c5a028",
-                    transform: "translate(-50%,-50%) scale(0)",
-                    animation: `heartBurstParticle 1s cubic-bezier(0.22,1,0.36,1) ${i * 0.015}s forwards`,
-                    // CSS custom props via inline style are not supported directly, use vars
-                    // We'll encode angle and dist in the animation name workaround:
-                    // Actually set via translateX/Y in keyframe — use multiple keyframe sets below
+                    top: clickCoords.y,
+                    left: clickCoords.x,
+                    transform: "translate(-50%, -50%) scale(0)",
+                    animation: `heartBurstParticle 1.2s cubic-bezier(0.22, 1, 0.36, 1) ${i * 0.015}s forwards`,
                   }}
-                  // Encode direction via a wrapper transform set
                   className={`hb-particle hb-${i}`}
-                />
+                >
+                  <svg
+                    width={i % 3 === 0 ? 18 : 12}
+                    height={i % 3 === 0 ? 18 : 12}
+                    viewBox="0 0 24 24"
+                    fill={i % 2 === 0 ? "#dc2658" : "#c5a028"}
+                    style={{
+                      display: "block",
+                      filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.15))",
+                    }}
+                  >
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                  </svg>
+                </div>
               );
             })}
           </div>
@@ -710,11 +715,12 @@ export function LandingGate({ onEnter }: LandingGateProps) {
         const dist = 90 + (i % 4) * 30;
         const tx = Math.cos(rad) * dist;
         const ty = Math.sin(rad) * dist;
+        const spin = (i % 2 === 0 ? 180 : -180) + (Math.random() * 90 - 45);
         return `
           @keyframes heartBurstParticle_${i} {
-            0%   { transform: translate(-50%,-50%) scale(0); opacity: 1; }
+            0%   { transform: translate(-50%,-50%) scale(0) rotate(0deg); opacity: 1; }
             60%  { opacity: 1; }
-            100% { transform: translate(calc(-50% + ${tx}px), calc(-50% + ${ty}px)) scale(1.5); opacity: 0; }
+            100% { transform: translate(calc(-50% + ${tx}px), calc(-50% + ${ty}px)) scale(1.5) rotate(${spin}deg); opacity: 0; }
           }
           .hb-${i} { animation-name: heartBurstParticle_${i} !important; }
           `;
