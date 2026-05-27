@@ -10,7 +10,7 @@ import { useState } from "react";
 // Helper to format dates for Calendar services (YYYYMMDDTHHmmSSZ)
 const formatCalendarDate = (event: any, isEnd: boolean = false) => {
   const year = "2026";
-  
+
   if (event.id === "wedding") {
     // Wedding ceremony - June 17 2026 time 9AM to 10AM
     const month = "06";
@@ -92,7 +92,7 @@ export function EventsSection() {
 
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Section Header */}
-        <motion.div 
+        <motion.div
           className="text-center mb-24"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -118,14 +118,13 @@ export function EventsSection() {
           {events.map((event, index) => {
             const isEven = index % 2 === 0;
             return (
-              <div 
+              <div
                 key={event.id}
-                className={`flex flex-col md:flex-row items-center gap-12 lg:gap-24 mb-32 last:mb-0 ${
-                  isEven ? "md:flex-row" : "md:flex-row-reverse"
-                }`}
+                className={`flex flex-col md:flex-row items-center gap-12 lg:gap-24 mb-32 last:mb-0 ${isEven ? "md:flex-row" : "md:flex-row-reverse"
+                  }`}
               >
                 {/* Visual Side */}
-                <motion.div 
+                <motion.div
                   className="w-full md:w-1/2 relative group"
                   initial={{ opacity: 0, x: isEven ? -50 : 50 }}
                   whileInView={{ opacity: 1, x: 0 }}
@@ -133,32 +132,32 @@ export function EventsSection() {
                   transition={{ duration: 1, ease: "easeOut" }}
                 >
                   <div className="aspect-[4/5] relative rounded-[4rem] overflow-hidden shadow-2xl border-4 border-white dark:border-white/10 ring-1 ring-primary/20">
-                    <img 
-                      src={event.id === "wedding" 
-                        ? "/images/wedding-ceremony-south.jpg" 
-                        : "/images/reception-anime.jpg"} 
+                    <img
+                      src={event.id === "wedding"
+                        ? "/images/wedding-ceremony-south.jpg"
+                        : "/images/reception-anime.jpg"}
                       alt={event.title}
                       className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-110"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-primary/60 to-transparent mix-blend-multiply opacity-40 group-hover:opacity-20 transition-opacity" />
-                    
+
                     {/* Event Label Overlay */}
                     <div className="absolute bottom-8 left-8 right-8 text-white p-6 glass-panel rounded-3xl bg-black/40 border-white/20">
-                       <h4 className="font-serif text-2xl mb-1">
-                         {language === "tamil" ? event.titleTamil : event.title}
-                       </h4>
-                       <p className="text-sm opacity-90 font-medium tracking-wide">
+                      <h4 className="font-serif text-2xl mb-1">
+                        {language === "tamil" ? event.titleTamil : event.title}
+                      </h4>
+                      <p className="text-sm opacity-90 font-medium tracking-wide">
                         {language === "tamil" ? "இடம்:" : "Venue:"} {language === "tamil" ? event.venueTamil : event.venue}
-                       </p>
+                      </p>
                     </div>
                   </div>
-                  
+
                   {/* Floating Ornament */}
                   <div className={`absolute -top-6 ${isEven ? "-right-6" : "-left-6"} w-24 h-24 bg-secondary/10 rounded-full blur-2xl animate-pulse`} />
                 </motion.div>
 
                 {/* Content Side */}
-                <motion.div 
+                <motion.div
                   className="w-full md:w-1/2 text-left space-y-8"
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -167,8 +166,8 @@ export function EventsSection() {
                 >
                   <div className="space-y-2">
                     <span className="text-secondary font-bold text-lg tracking-widest uppercase block mb-2">
-                      {language === "tamil" 
-                        ? (event.id === "reception" ? "வரவேற்பு" : "திருமணம்") 
+                      {language === "tamil"
+                        ? (event.id === "reception" ? "வரவேற்பு" : "திருமணம்")
                         : (event.id === "reception" ? "Reception" : "Muhurtam")}
                     </span>
                     <h3 className="font-serif text-4xl md:text-5xl text-primary leading-tight">
@@ -240,7 +239,7 @@ export function EventsSection() {
                       <MapPin className="w-4 h-4" />
                       {language === "tamil" ? "வரைபடத்தில் காண்க" : "Directions"}
                     </a>
-                    
+
                     <div className="relative">
                       <button
                         onClick={() => setActiveMenu(activeMenu === event.id ? null : event.id)}
@@ -252,14 +251,14 @@ export function EventsSection() {
 
                       <AnimatePresence>
                         {activeMenu === event.id && (
-                          <motion.div 
+                          <motion.div
                             className="absolute bottom-full left-0 mb-4 w-56 bg-white rounded-3xl shadow-2xl border border-primary/10 overflow-hidden z-50 p-2"
                             initial={{ opacity: 0, y: 10, scale: 0.95 }}
                             animate={{ opacity: 1, y: 0, scale: 1 }}
                             exit={{ opacity: 0, y: 10, scale: 0.95 }}
                             transition={{ duration: 0.2, ease: "easeOut" }}
                           >
-                            <button 
+                            <button
                               onClick={() => handleGoogleCalendar(event)}
                               className="w-full flex items-center gap-3 px-4 py-3 hover:bg-primary/5 text-primary text-sm font-bold rounded-2xl transition-colors"
                             >
@@ -268,7 +267,7 @@ export function EventsSection() {
                               </div>
                               Google Calendar
                             </button>
-                            <button 
+                            <button
                               onClick={() => handleICalDownload(event)}
                               className="w-full flex items-center gap-3 px-4 py-3 hover:bg-primary/5 text-primary text-sm font-bold rounded-2xl transition-colors"
                             >
@@ -288,7 +287,7 @@ export function EventsSection() {
           })}
         </div>
 
-        <motion.div 
+        <motion.div
           className="mt-32 text-center"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}

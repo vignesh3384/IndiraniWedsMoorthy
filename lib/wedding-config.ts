@@ -158,7 +158,7 @@ export const weddingConfig = {
   // Background Music (optional)
   music: {
     enabled: true,
-    src: "/music/anbilavan.mp3",
+    src: "/music/Mudhal_Kanave.mp3",
     title: "Anbil-Avan OST",
   },
 

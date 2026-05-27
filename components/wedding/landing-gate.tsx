@@ -138,16 +138,15 @@ export function LandingGate({ onEnter }: LandingGateProps) {
     return () => clearTimeout(t);
   }, []);
 
-  const handleHeartClick = useCallback(
-    (e: React.MouseEvent<HTMLButtonElement>) => {
-      e.stopPropagation();
+  const handleEnter = useCallback(
+    (e: React.MouseEvent) => {
       if (hasClickedRef.current || isExiting) return;
       hasClickedRef.current = true;
 
-      // Add ripple at click point
+      // Add ripple at click point (fallback to center for keyboard events)
       const id = ++rippleCounter.current;
-      const x = e.clientX;
-      const y = e.clientY;
+      const x = e.clientX || (typeof window !== "undefined" ? window.innerWidth / 2 : 0);
+      const y = e.clientY || (typeof window !== "undefined" ? window.innerHeight / 2 : 0);
       setRipples((prev) => [...prev, { id, x, y }]);
 
       // Heart burst + press effect
@@ -172,6 +171,7 @@ export function LandingGate({ onEnter }: LandingGateProps) {
   return (
     <div
       className={`landing-gate-wrapper ${isMounted ? "gate-mounted" : ""} ${isExiting ? "gate-exiting" : ""}`}
+      onClick={handleEnter}
       style={{
         position: "fixed",
         inset: 0,
@@ -179,6 +179,7 @@ export function LandingGate({ onEnter }: LandingGateProps) {
         userSelect: "none",
         overflow: "hidden",
         background: "radial-gradient(ellipse at 50% 40%, #2a0810 0%, #160306 40%, #0a0204 100%)",
+        cursor: "pointer",
       }}
     >
       {/* ── Warm vignette glow ── */}
@@ -444,7 +445,7 @@ export function LandingGate({ onEnter }: LandingGateProps) {
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 10 }}>
           <button
             id="heart-enter-btn"
-            onClick={handleHeartClick}
+            onClick={handleEnter}
             aria-label="Open wedding invitation"
             style={{
               position: "relative",
@@ -554,7 +555,7 @@ export function LandingGate({ onEnter }: LandingGateProps) {
                 letterSpacing: "0.2em",
               }}
             >
-              Tap to open
+              Tap anywhere to open
             </span>
             <span style={{ fontSize: 10, color: "rgba(197,160,40,0.5)" }}>—</span>
           </div>

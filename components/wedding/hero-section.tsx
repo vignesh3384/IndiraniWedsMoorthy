@@ -17,8 +17,11 @@ export function HeroSection() {
     >
       {/* Static Background Image */}
       <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: "url('/images/temple-background.jpg')" }}
+        className="absolute inset-0 bg-cover bg-no-repeat"
+        style={{ 
+          backgroundImage: "url('/images/temple-background.jpg')",
+          backgroundPosition: "center 15%"
+        }}
       />
 
       {/* Gradient & Texture Overlays (Increased opacity for better text visibility) */}
