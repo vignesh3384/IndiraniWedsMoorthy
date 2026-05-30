@@ -546,20 +546,13 @@ export function LandingGate({ onEnter }: LandingGateProps) {
             </div>
           </button>
 
-          {/* Label */}
-          <div style={{ display: "flex", alignItems: "center", gap: 8, animation: "tapPulse 2.5s ease-in-out 2s infinite" }}>
-            <span style={{ fontSize: 10, color: "rgba(197,160,40,0.5)" }}>—</span>
-            <span
-              style={{
-                fontFamily: "var(--font-sans), sans-serif",
-                fontSize: "clamp(10px, 1.5vw, 13px)",
-                color: "rgba(197,160,40,0.75)",
-                letterSpacing: "0.2em",
-              }}
-            >
+          {/* Elegant Pill CTA */}
+          <div className="tap-anywhere-badge">
+            <span className="beacon-dot" aria-hidden="true" />
+            <span className="tap-anywhere-text">
               Tap anywhere to open
             </span>
-            <span style={{ fontSize: 10, color: "rgba(197,160,40,0.5)" }}>—</span>
+            <span className="beacon-dot" aria-hidden="true" />
           </div>
         </div>
 
@@ -675,9 +668,77 @@ export function LandingGate({ onEnter }: LandingGateProps) {
           from { opacity: 0; transform: translateY(16px); }
           to   { opacity: 1; transform: translateY(0); }
         }
-        @keyframes tapPulse {
-          0%, 100% { opacity: 1; transform: scale(1); }
-          50%       { opacity: 0.5; transform: scale(0.97); }
+        .tap-anywhere-badge {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 12px;
+          padding: 8px 24px;
+          background: rgba(197, 160, 40, 0.08);
+          border: 1px solid rgba(197, 160, 40, 0.35);
+          border-radius: 9999px;
+          backdrop-filter: blur(8px);
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba(197, 160, 40, 0.1);
+          animation: badgePulse 2.5s ease-in-out infinite;
+          transition: all 0.3s ease;
+          margin-top: 16px;
+        }
+        .tap-anywhere-badge:hover {
+          background: rgba(197, 160, 40, 0.18);
+          border-color: rgba(197, 160, 40, 0.65);
+          box-shadow: 0 6px 24px rgba(0, 0, 0, 0.5), 0 0 25px rgba(197, 160, 40, 0.25);
+          transform: scale(1.02);
+        }
+        .tap-anywhere-text {
+          font-family: var(--font-sans), sans-serif;
+          font-size: clamp(11px, 1.6vw, 14px);
+          color: #fdfbf7;
+          font-weight: 500;
+          letter-spacing: 0.22em;
+          text-transform: uppercase;
+          text-shadow: 0 2px 4px rgba(0,0,0,0.6);
+        }
+        .beacon-dot {
+          position: relative;
+          width: 6px;
+          height: 6px;
+          background-color: #fbbf24;
+          border-radius: 50%;
+          display: inline-block;
+        }
+        .beacon-dot::after {
+          content: '';
+          position: absolute;
+          top: -4px;
+          left: -4px;
+          right: -4px;
+          bottom: -4px;
+          border-radius: 50%;
+          border: 1.5px solid #fbbf24;
+          opacity: 0;
+          animation: beaconPing 1.8s cubic-bezier(0.24, 0, 0.38, 1) infinite;
+        }
+        @keyframes badgePulse {
+          0%, 100% {
+            transform: scale(1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba(197, 160, 40, 0.1);
+          }
+          50% {
+            transform: scale(1.04);
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4), 0 0 25px rgba(197, 160, 40, 0.3);
+            border-color: rgba(197, 160, 40, 0.6);
+            background: rgba(197, 160, 40, 0.12);
+          }
+        }
+        @keyframes beaconPing {
+          0% {
+            transform: scale(0.6);
+            opacity: 1;
+          }
+          100% {
+            transform: scale(2.5);
+            opacity: 0;
+          }
         }
         @keyframes heartPulse {
           0%, 100% { transform: scale(1);    filter: drop-shadow(0 0 14px rgba(220,38,88,0.55)) drop-shadow(0 0 28px rgba(154,27,50,0.4)); }
