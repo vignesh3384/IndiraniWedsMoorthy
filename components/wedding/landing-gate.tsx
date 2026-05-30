@@ -31,46 +31,7 @@ function KolamCorner({ size = 80 }: { size?: number }) {
   );
 }
 
-// ─── Temple Lamp (Vilakku) SVG ──────────────────────────────────────────────
-function TempleLamp({ glowing }: { glowing: boolean }) {
-  return (
-    <svg width="56" height="72" viewBox="0 0 56 72" fill="none">
-      {/* Flame */}
-      <ellipse cx="28" cy="10" rx="5" ry="8" fill={glowing ? "#fbbf24" : "#d4af37"} opacity={glowing ? 0.95 : 0.6}>
-        {glowing && (
-          <animate attributeName="ry" values="8;10;7;9;8" dur="1.5s" repeatCount="indefinite" />
-        )}
-      </ellipse>
-      <ellipse cx="28" cy="12" rx="3" ry="5" fill={glowing ? "#fef3c7" : "#f5e6a3"} opacity={glowing ? 0.9 : 0.5}>
-        {glowing && (
-          <animate attributeName="ry" values="5;7;4;6;5" dur="1.5s" repeatCount="indefinite" />
-        )}
-      </ellipse>
-      {/* Lamp cup */}
-      <path d="M18 22 Q28 18 38 22 L35 30 Q28 32 21 30 Z" fill="#c5a028" />
-      <path d="M20 22 Q28 19 36 22" stroke="#d4af37" strokeWidth="1" fill="none" opacity="0.7" />
-      {/* Lamp stem */}
-      <rect x="25" y="30" width="6" height="16" rx="1" fill="#b8922a" />
-      {/* Lamp base */}
-      <ellipse cx="28" cy="48" rx="14" ry="4" fill="#c5a028" />
-      <rect x="14" y="48" width="28" height="4" rx="1" fill="#b8922a" />
-      <ellipse cx="28" cy="52" rx="16" ry="4" fill="#c5a028" opacity="0.8" />
-      {/* Decorative rings */}
-      <ellipse cx="28" cy="48" rx="14" ry="2" stroke="#d4af37" strokeWidth="0.5" fill="none" opacity="0.7" />
-      {/* Glow halo */}
-      {glowing && (
-        <>
-          <ellipse cx="28" cy="10" rx="12" ry="14" fill="#fbbf24" opacity="0.08">
-            <animate attributeName="opacity" values="0.08;0.18;0.08" dur="2s" repeatCount="indefinite" />
-          </ellipse>
-          <ellipse cx="28" cy="10" rx="20" ry="22" fill="#f59e0b" opacity="0.04">
-            <animate attributeName="opacity" values="0.04;0.1;0.04" dur="2.5s" repeatCount="indefinite" />
-          </ellipse>
-        </>
-      )}
-    </svg>
-  );
-}
+
 
 // ─── Jasmine Petal ──────────────────────────────────────────────────────────
 function JasminePetal({ style }: { style: React.CSSProperties }) {
@@ -95,7 +56,6 @@ export function LandingGate({ onEnter }: LandingGateProps) {
   const { couple, weddingDate } = weddingConfig;
   const [isExiting, setIsExiting] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
-  const [isGlowing, setIsGlowing] = useState(false);
   const [ripples, setRipples] = useState<{ id: number; x: number; y: number }[]>([]);
   const [heartBurst, setHeartBurst] = useState(false);
   const [isHeartPressed, setIsHeartPressed] = useState(false);
@@ -160,7 +120,6 @@ export function LandingGate({ onEnter }: LandingGateProps) {
 
   useEffect(() => {
     setIsMounted(true);
-    const t = setTimeout(() => setIsGlowing(true), 800);
 
     // Automatically enter after 5 seconds if not clicked/tapped yet
     const autoEnterTimer = setTimeout(() => {
@@ -170,7 +129,6 @@ export function LandingGate({ onEnter }: LandingGateProps) {
     }, 5000);
 
     return () => {
-      clearTimeout(t);
       clearTimeout(autoEnterTimer);
     };
   }, [handleEnter]);
@@ -359,16 +317,7 @@ export function LandingGate({ onEnter }: LandingGateProps) {
           Wedding Invitation
         </p>
 
-        {/* Temple lamp */}
-        <div
-          style={{
-            marginBottom: 20,
-            filter: isGlowing ? "drop-shadow(0 0 16px rgba(251,191,36,0.6))" : "none",
-            transition: "filter 0.8s ease",
-          }}
-        >
-          <TempleLamp glowing={isGlowing} />
-        </div>
+
 
         {/* Groom name */}
         <div
