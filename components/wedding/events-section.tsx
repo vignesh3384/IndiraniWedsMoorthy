@@ -134,8 +134,8 @@ export function EventsSection() {
                   <div className="aspect-[4/5] relative rounded-[4rem] overflow-hidden shadow-2xl border-4 border-white dark:border-white/10 ring-1 ring-primary/20">
                     <img
                       src={event.id === "wedding"
-                        ? "/images/wedding-ceremony-south.jpg"
-                        : "/images/reception-anime.jpg"}
+                        ? "/images/wedding-ceremony-south.jpeg"
+                        : "/images/reception-anime.jpeg"}
                       alt={event.title}
                       className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-110"
                     />

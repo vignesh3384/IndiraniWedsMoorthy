@@ -133,21 +133,15 @@ export function LandingGate({ onEnter }: LandingGateProps) {
     []
   );
 
-  useEffect(() => {
-    setIsMounted(true);
-    const t = setTimeout(() => setIsGlowing(true), 800);
-    return () => clearTimeout(t);
-  }, []);
-
   const handleEnter = useCallback(
-    (e: React.MouseEvent) => {
+    (e?: React.MouseEvent) => {
       if (hasClickedRef.current || isExiting) return;
       hasClickedRef.current = true;
 
-      // Add ripple at click point (fallback to center for keyboard events)
+      // Add ripple at click point (fallback to center for keyboard events or auto-trigger)
       const id = ++rippleCounter.current;
-      const x = e.clientX || (typeof window !== "undefined" ? window.innerWidth / 2 : 0);
-      const y = e.clientY || (typeof window !== "undefined" ? window.innerHeight / 2 : 0);
+      const x = e?.clientX ?? (typeof window !== "undefined" ? window.innerWidth / 2 : 0);
+      const y = e?.clientY ?? (typeof window !== "undefined" ? window.innerHeight / 2 : 0);
       setRipples((prev) => [...prev, { id, x, y }]);
       setClickCoords({ x, y });
 
@@ -163,6 +157,23 @@ export function LandingGate({ onEnter }: LandingGateProps) {
     },
     [isExiting, onEnter]
   );
+
+  useEffect(() => {
+    setIsMounted(true);
+    const t = setTimeout(() => setIsGlowing(true), 800);
+
+    // Automatically enter after 5 seconds if not clicked/tapped yet
+    const autoEnterTimer = setTimeout(() => {
+      if (!hasClickedRef.current) {
+        handleEnter();
+      }
+    }, 5000);
+
+    return () => {
+      clearTimeout(t);
+      clearTimeout(autoEnterTimer);
+    };
+  }, [handleEnter]);
 
   const formattedDate = weddingDate.toLocaleDateString("en-IN", {
     year: "numeric",
