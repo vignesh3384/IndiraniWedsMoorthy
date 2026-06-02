@@ -245,6 +245,8 @@ export function LandingGate({ onEnter }: LandingGateProps) {
         <KolamCorner size={72} />
       </div>
 
+      
+
       {/* ── Floating jasmine petals ── */}
       {isMounted && jasminePositions.map((j) => (
         <JasminePetal
@@ -314,6 +316,21 @@ export function LandingGate({ onEnter }: LandingGateProps) {
           opacity: 0,
         }}
       >
+        {/* Wedding date (just above OM) */}
+        <p
+          style={{
+            fontFamily: "var(--font-tamil-thin), serif",
+            fontSize: "clamp(12px, 1.4vw, 14px)",
+            color: "#9a1b32",
+            margin: "0 0 6px",
+            letterSpacing: "0.12em",
+            opacity: 0,
+            animation: "nameSlideUp 1.2s ease 0.15s both",
+          }}
+        >
+          {formattedDate}
+        </p>
+
         {/* Auspicious symbol */}
         <div style={{ marginBottom: 8, opacity: 0.85 }}>
           <span
@@ -364,7 +381,7 @@ export function LandingGate({ onEnter }: LandingGateProps) {
           <span
             style={{
               fontFamily: "var(--font-tamil-thin), serif",
-              fontSize: "clamp(32px, 7vw, 60px)",
+              fontSize: "clamp(26px, 5.5vw, 52px)",
               fontWeight: 300,
               color: "#9a1b32",
               letterSpacing: "0.06em",
@@ -402,7 +419,7 @@ export function LandingGate({ onEnter }: LandingGateProps) {
           <span
             style={{
               fontFamily: "var(--font-tamil-thin), serif",
-              fontSize: "clamp(32px, 7vw, 60px)",
+              fontSize: "clamp(26px, 5.5vw, 52px)",
               fontWeight: 300,
               color: "#9a1b32",
               letterSpacing: "0.06em",
@@ -423,18 +440,7 @@ export function LandingGate({ onEnter }: LandingGateProps) {
           <div style={{ width: "clamp(30px, 6vw, 60px)", height: 1, background: "linear-gradient(90deg, rgba(197,160,40,0.5) 70%, transparent)" }} />
         </div>
 
-        {/* Wedding date */}
-        <p
-          style={{
-            fontFamily: "var(--font-tamil-thin), serif",
-            fontSize: "clamp(12px, 1.8vw, 16px)",
-            color: "#9a1b32",
-            margin: "0 0 28px",
-            letterSpacing: "0.12em",
-          }}
-        >
-          {formattedDate}
-        </p>
+        {/* Wedding date moved to top-center for visibility */}
 
 
         {/* ── Heart Burst Particles ── */}

@@ -75,7 +75,7 @@ export function HeroSection() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.2, duration: 1.2, ease: "easeOut" }}
         >
-          <span className={`block text-primary drop-shadow-lg whitespace-nowrap ${language === "tamil" ? "font-tamil-thin font-light tracking-wide" : "font-serif font-light tracking-wide"}`}>
+          <span className={`block text-primary drop-shadow-lg ${language === "tamil" ? "font-tamil-thin font-light tracking-wide" : "font-serif font-light tracking-wide"}`}>
             {language === "tamil" ? couple.groom.nameTamil : couple.groom.name}
           </span>
           <span className="text-[var(--golden-green)] text-3xl md:text-5xl font-light drop-shadow-md inline-block mx-4">
