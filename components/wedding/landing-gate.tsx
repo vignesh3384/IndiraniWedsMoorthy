@@ -3,6 +3,15 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { weddingConfig } from "@/lib/wedding-config";
 
+function mulberry32(seed: number) {
+  return function () {
+    let t = (seed += 0x6d2b79f5);
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
 interface LandingGateProps {
   onEnter: () => void;
 }
@@ -62,36 +71,56 @@ export function LandingGate({ onEnter }: LandingGateProps) {
   const [clickCoords, setClickCoords] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const rippleCounter = useRef(0);
   const hasClickedRef = useRef(false);
+  const seededRandom = useMemo(() => mulberry32(3582719), []);
 
-  // Stable particles
   const particles = useMemo(
     () =>
       Array.from({ length: 30 }, (_, i) => ({
         id: i,
-        w: Math.random() * 3 + 2,
-        h: Math.random() * 3 + 2,
-        left: `${Math.random() * 100}%`,
-        top: `${Math.random() * 100}%`,
-        dur: `${Math.random() * 10 + 8}s`,
-        delay: `${Math.random() * 8}s`,
-        type: Math.random() > 0.5 ? "gold" : "cream",
-        rotate: Math.random() * 360,
+        w: seededRandom() * 3 + 2,
+        h: seededRandom() * 3 + 2,
+        left: `${seededRandom() * 100}%`,
+        top: `${seededRandom() * 100}%`,
+        dur: `${seededRandom() * 10 + 8}s`,
+        delay: `${seededRandom() * 8}s`,
+        type: seededRandom() > 0.5 ? "gold" : "cream",
+        rotate: seededRandom() * 360,
+        alpha: seededRandom() * 0.3,
       })),
-    []
+    [seededRandom]
   );
 
   const jasminePositions = useMemo(
     () =>
       Array.from({ length: 16 }, (_, i) => ({
         id: i,
-        left: `${5 + Math.random() * 90}%`,
-        top: `${Math.random() * 30}%`,
-        delay: `${Math.random() * 6}s`,
-        dur: `${Math.random() * 6 + 8}s`,
-        rotate: Math.random() * 360,
+        left: `${5 + seededRandom() * 90}%`,
+        top: `${seededRandom() * 30}%`,
+        delay: `${seededRandom() * 6}s`,
+        dur: `${seededRandom() * 6 + 8}s`,
+        rotate: seededRandom() * 360,
       })),
-    []
+    [seededRandom]
   );
+
+  const heartBurstStyles = useMemo(() => {
+    return Array.from({ length: 24 }, (_, i) => {
+      const angle = (i / 24) * 360;
+      const rad = angle * (Math.PI / 180);
+      const dist = 90 + (i % 4) * 30;
+      const tx = Math.cos(rad) * dist;
+      const ty = Math.sin(rad) * dist;
+      const spin = (i % 2 === 0 ? 180 : -180) + (seededRandom() * 90 - 45);
+      return `
+          @keyframes heartBurstParticle_${i} {
+            0%   { transform: translate(-50%,-50%) scale(0) rotate(0deg); opacity: 1; }
+            60%  { opacity: 1; }
+            100% { transform: translate(calc(-50% + ${tx}px), calc(-50% + ${ty}px)) scale(1.5) rotate(${spin}deg); opacity: 0; }
+          }
+          .hb-${i} { animation-name: heartBurstParticle_${i} !important; }
+          `;
+    }).join("");
+  }, [seededRandom]);
 
   const handleEnter = useCallback(
     (e?: React.MouseEvent) => {
@@ -149,7 +178,11 @@ export function LandingGate({ onEnter }: LandingGateProps) {
         zIndex: 9999,
         userSelect: "none",
         overflow: "hidden",
-        background: "radial-gradient(ellipse at 50% 40%, #2a0810 0%, #160306 40%, #0a0204 100%)",
+        backgroundImage: "url('/images/ladingpage-bg.jpeg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center bottom",
+        backgroundAttachment: "scroll",
+        backgroundRepeat: "no-repeat",
         cursor: "pointer",
       }}
     >
@@ -236,8 +269,8 @@ export function LandingGate({ onEnter }: LandingGateProps) {
             height: p.h,
             borderRadius: "50%",
             background: p.type === "gold"
-              ? `rgba(197,160,40,${0.15 + Math.random() * 0.3})`
-              : `rgba(253,251,247,${0.08 + Math.random() * 0.2})`,
+              ? `rgba(197,160,40,${0.15 + p.alpha})`
+              : `rgba(253,251,247,${0.08 + p.alpha})`,
             left: p.left,
             top: p.top,
             animation: `goldFloat ${p.dur} ease-in-out infinite`,
@@ -403,118 +436,6 @@ export function LandingGate({ onEnter }: LandingGateProps) {
           {formattedDate}
         </p>
 
-        {/* ── Heart Button ── */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 10 }}>
-          <button
-            id="heart-enter-btn"
-            onClick={handleEnter}
-            aria-label="Open wedding invitation"
-            style={{
-              position: "relative",
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-              padding: 0,
-              outline: "none",
-              transform: isHeartPressed ? "scale(1.35)" : "scale(1)",
-              transition: "transform 0.25s cubic-bezier(0.34,1.56,0.64,1)",
-              filter: isHeartPressed
-                ? "drop-shadow(0 0 32px rgba(220,38,88,0.95)) drop-shadow(0 0 60px rgba(197,160,40,0.6))"
-                : "drop-shadow(0 0 14px rgba(220,38,88,0.55)) drop-shadow(0 0 28px rgba(154,27,50,0.4))",
-              animation: isHeartPressed ? "none" : "heartPulse 2s ease-in-out 2s infinite",
-            }}
-          >
-            {/* Heart SVG */}
-            <svg
-              width="clamp(60px,10vw,88px)"
-              height="clamp(60px,10vw,88px)"
-              viewBox="0 0 100 90"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              {/* Gradient definitions */}
-              <defs>
-                <radialGradient id="heartGrad" cx="50%" cy="35%" r="65%">
-                  <stop offset="0%" stopColor="#ff6b8a" />
-                  <stop offset="50%" stopColor="#dc2658" />
-                  <stop offset="100%" stopColor="#8b0b2e" />
-                </radialGradient>
-                <radialGradient id="heartSheen" cx="35%" cy="25%" r="50%">
-                  <stop offset="0%" stopColor="rgba(255,220,230,0.55)" />
-                  <stop offset="100%" stopColor="rgba(255,220,230,0)" />
-                </radialGradient>
-              </defs>
-              {/* Main heart */}
-              <path
-                d="M50 82 C50 82 8 54 8 28 C8 14 18 6 30 6 C38 6 45 10 50 16 C55 10 62 6 70 6 C82 6 92 14 92 28 C92 54 50 82 50 82Z"
-                fill="url(#heartGrad)"
-              />
-              {/* Sheen highlight */}
-              <path
-                d="M50 82 C50 82 8 54 8 28 C8 14 18 6 30 6 C38 6 45 10 50 16 C55 10 62 6 70 6 C82 6 92 14 92 28 C92 54 50 82 50 82Z"
-                fill="url(#heartSheen)"
-              />
-              {/* Gold border shimmer */}
-              <path
-                d="M50 82 C50 82 8 54 8 28 C8 14 18 6 30 6 C38 6 45 10 50 16 C55 10 62 6 70 6 C82 6 92 14 92 28 C92 54 50 82 50 82Z"
-                stroke="#c5a028"
-                strokeWidth="1.5"
-                fill="none"
-                opacity="0.6"
-              />
-              {/* Small decorative inner OM symbol */}
-              <text
-                x="50"
-                y="46"
-                textAnchor="middle"
-                fontFamily="serif"
-                fontSize="18"
-                fill="rgba(253,251,247,0.85)"
-                style={{ letterSpacing: 0 }}
-              >
-                ♥
-              </text>
-            </svg>
-
-            {/* Orbiting gold dots */}
-            <div
-              aria-hidden
-              style={{
-                position: "absolute",
-                inset: -12,
-                borderRadius: "50%",
-                animation: "heartOrbit 4s linear infinite",
-                pointerEvents: "none",
-              }}
-            >
-              {[0, 60, 120, 180, 240, 300].map((deg) => (
-                <div
-                  key={deg}
-                  style={{
-                    position: "absolute",
-                    width: 4,
-                    height: 4,
-                    borderRadius: "50%",
-                    background: "#c5a028",
-                    opacity: 0.7,
-                    top: "50%",
-                    left: "50%",
-                    transform: `rotate(${deg}deg) translateX(${"clamp(38px,6vw,52px)"}) translate(-50%,-50%)`,
-                  }}
-                />
-              ))}
-            </div>
-          </button>
-
-          {/* Elegant Pill CTA */}
-          <div className="tap-anywhere-badge">
-            <span className="beacon-dot" aria-hidden="true" />
-            <span className="tap-anywhere-text">
-              Tap anywhere to open
-            </span>
-            <span className="beacon-dot" aria-hidden="true" />
-          </div>
-        </div>
 
         {/* ── Heart Burst Particles ── */}
         {heartBurst && (
@@ -628,78 +549,6 @@ export function LandingGate({ onEnter }: LandingGateProps) {
           from { opacity: 0; transform: translateY(16px); }
           to   { opacity: 1; transform: translateY(0); }
         }
-        .tap-anywhere-badge {
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          gap: 12px;
-          padding: 8px 24px;
-          background: rgba(197, 160, 40, 0.08);
-          border: 1px solid rgba(197, 160, 40, 0.35);
-          border-radius: 9999px;
-          backdrop-filter: blur(8px);
-          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba(197, 160, 40, 0.1);
-          animation: badgePulse 2.5s ease-in-out infinite;
-          transition: all 0.3s ease;
-          margin-top: 16px;
-        }
-        .tap-anywhere-badge:hover {
-          background: rgba(197, 160, 40, 0.18);
-          border-color: rgba(197, 160, 40, 0.65);
-          box-shadow: 0 6px 24px rgba(0, 0, 0, 0.5), 0 0 25px rgba(197, 160, 40, 0.25);
-          transform: scale(1.02);
-        }
-        .tap-anywhere-text {
-          font-family: var(--font-sans), sans-serif;
-          font-size: clamp(11px, 1.6vw, 14px);
-          color: #fdfbf7;
-          font-weight: 500;
-          letter-spacing: 0.22em;
-          text-transform: uppercase;
-          text-shadow: 0 2px 4px rgba(0,0,0,0.6);
-        }
-        .beacon-dot {
-          position: relative;
-          width: 6px;
-          height: 6px;
-          background-color: #fbbf24;
-          border-radius: 50%;
-          display: inline-block;
-        }
-        .beacon-dot::after {
-          content: '';
-          position: absolute;
-          top: -4px;
-          left: -4px;
-          right: -4px;
-          bottom: -4px;
-          border-radius: 50%;
-          border: 1.5px solid #fbbf24;
-          opacity: 0;
-          animation: beaconPing 1.8s cubic-bezier(0.24, 0, 0.38, 1) infinite;
-        }
-        @keyframes badgePulse {
-          0%, 100% {
-            transform: scale(1);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba(197, 160, 40, 0.1);
-          }
-          50% {
-            transform: scale(1.04);
-            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4), 0 0 25px rgba(197, 160, 40, 0.3);
-            border-color: rgba(197, 160, 40, 0.6);
-            background: rgba(197, 160, 40, 0.12);
-          }
-        }
-        @keyframes beaconPing {
-          0% {
-            transform: scale(0.6);
-            opacity: 1;
-          }
-          100% {
-            transform: scale(2.5);
-            opacity: 0;
-          }
-        }
         @keyframes heartPulse {
           0%, 100% { transform: scale(1);    filter: drop-shadow(0 0 14px rgba(220,38,88,0.55)) drop-shadow(0 0 28px rgba(154,27,50,0.4)); }
           50%       { transform: scale(1.09); filter: drop-shadow(0 0 24px rgba(220,38,88,0.85)) drop-shadow(0 0 48px rgba(197,160,40,0.5)); }
@@ -730,22 +579,7 @@ export function LandingGate({ onEnter }: LandingGateProps) {
         }
 
         /* Heart burst — 24 directional particles */
-        ${Array.from({ length: 24 }, (_, i) => {
-        const angle = (i / 24) * 360;
-        const rad = angle * (Math.PI / 180);
-        const dist = 90 + (i % 4) * 30;
-        const tx = Math.cos(rad) * dist;
-        const ty = Math.sin(rad) * dist;
-        const spin = (i % 2 === 0 ? 180 : -180) + (Math.random() * 90 - 45);
-        return `
-          @keyframes heartBurstParticle_${i} {
-            0%   { transform: translate(-50%,-50%) scale(0) rotate(0deg); opacity: 1; }
-            60%  { opacity: 1; }
-            100% { transform: translate(calc(-50% + ${tx}px), calc(-50% + ${ty}px)) scale(1.5) rotate(${spin}deg); opacity: 0; }
-          }
-          .hb-${i} { animation-name: heartBurstParticle_${i} !important; }
-          `;
-      }).join('')}
+        ${heartBurstStyles}
 
         @media (max-width: 480px) {
           .landing-gate-wrapper { cursor: default; }

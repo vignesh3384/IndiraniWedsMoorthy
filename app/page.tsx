@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { LanguageProvider } from "@/components/wedding/language-provider";
 import { Navigation } from "@/components/wedding/navigation";
 import { motion, AnimatePresence } from "framer-motion";
@@ -16,6 +16,84 @@ import { LandingGate } from "@/components/wedding/landing-gate";
 
 export default function WeddingPage() {
   const [hasEntered, setHasEntered] = useState(false);
+
+  useEffect(() => {
+    if (!hasEntered) return;
+
+    const autoScrollCancelledRef = { current: false } as { current: boolean };
+    const animationRef = { current: 0 } as { current: number | null };
+    const timeoutRef = { current: 0 } as { current: number | null };
+    const lastTimeRef = { current: 0 } as { current: number | null };
+
+    const cancelAutoScroll = () => {
+      autoScrollCancelledRef.current = true;
+      if (animationRef.current !== null) {
+        window.cancelAnimationFrame(animationRef.current);
+        animationRef.current = null;
+      }
+      if (timeoutRef.current !== null) {
+        window.clearTimeout(timeoutRef.current);
+        timeoutRef.current = null;
+      }
+      lastTimeRef.current = null;
+    };
+
+    const handleUserInteraction = () => {
+      if (!autoScrollCancelledRef.current) {
+        cancelAutoScroll();
+      }
+    };
+
+    window.addEventListener("touchstart", handleUserInteraction, { passive: true });
+    window.addEventListener("wheel", handleUserInteraction, { passive: true });
+    window.addEventListener("pointerdown", handleUserInteraction, { passive: true });
+    window.addEventListener("keydown", handleUserInteraction, { passive: true });
+
+    const animatePageScroll = () => {
+      const pixelsPerSecond = 130;
+
+      const step = (timestamp: number) => {
+        if (autoScrollCancelledRef.current) return;
+
+        if (!lastTimeRef.current) {
+          lastTimeRef.current = timestamp;
+        }
+
+        const delta = Math.min(timestamp - lastTimeRef.current, 50);
+        lastTimeRef.current = timestamp;
+
+        const currentY = window.scrollY;
+        const pageHeight = Math.max(
+          document.documentElement.scrollHeight,
+          document.body.scrollHeight,
+        );
+        const maxY = pageHeight - window.innerHeight;
+        const nextY = Math.min(currentY + (pixelsPerSecond * delta) / 1000, maxY);
+
+        window.scrollTo(0, nextY);
+
+        if (nextY + 1 < maxY) {
+          animationRef.current = window.requestAnimationFrame(step);
+        }
+      };
+
+      animationRef.current = window.requestAnimationFrame(step);
+    };
+
+    timeoutRef.current = window.setTimeout(() => {
+      if (!autoScrollCancelledRef.current) {
+        animatePageScroll();
+      }
+    }, 5000);
+
+    return () => {
+      cancelAutoScroll();
+      window.removeEventListener("touchstart", handleUserInteraction);
+      window.removeEventListener("wheel", handleUserInteraction);
+      window.removeEventListener("pointerdown", handleUserInteraction);
+      window.removeEventListener("keydown", handleUserInteraction);
+    };
+  }, [hasEntered]);
 
   return (
     <>
