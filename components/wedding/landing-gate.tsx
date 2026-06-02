@@ -150,6 +150,11 @@ export function LandingGate({ onEnter }: LandingGateProps) {
   useEffect(() => {
     setIsMounted(true);
 
+    // Add class to body to hide the global site scroll arrow while landing gate is active
+    if (typeof document !== "undefined") {
+      document.body.classList.add("hide-site-scroll-arrow");
+    }
+
     // Automatically enter after 5 seconds if not clicked/tapped yet
     const autoEnterTimer = setTimeout(() => {
       if (!hasClickedRef.current) {
@@ -159,6 +164,9 @@ export function LandingGate({ onEnter }: LandingGateProps) {
 
     return () => {
       clearTimeout(autoEnterTimer);
+      if (typeof document !== "undefined") {
+        document.body.classList.remove("hide-site-scroll-arrow");
+      }
     };
   }, [handleEnter]);
 
@@ -167,6 +175,19 @@ export function LandingGate({ onEnter }: LandingGateProps) {
     month: "long",
     day: "numeric",
   });
+
+  const displayedDate = (() => {
+    const ev = (weddingConfig as any).events;
+    if (ev && ev.length >= 2) {
+      const a = ev[0].date as string;
+      const b = ev[1].date as string;
+      const dayA = a.match(/\d+/)?.[0] ?? "";
+      const dayB = b.match(/\d+/)?.[0] ?? "";
+      const month = a.replace(/\d+/g, "").trim();
+      return `${dayA} & ${dayB} ${month} ${weddingDate.getFullYear()}`;
+    }
+    return formattedDate;
+  })();
 
   return (
     <div
@@ -328,7 +349,7 @@ export function LandingGate({ onEnter }: LandingGateProps) {
             animation: "nameSlideUp 1.2s ease 0.15s both",
           }}
         >
-          {formattedDate}
+          {displayedDate}
         </p>
 
         {/* Auspicious symbol */}

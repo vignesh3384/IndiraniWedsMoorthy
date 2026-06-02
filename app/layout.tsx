@@ -59,6 +59,14 @@ export default function RootLayout({
     <html lang="en" className={`${cormorant.variable} ${lato.variable} ${notoTamil.variable} ${sacramento.variable}`}>
       <body className="font-sans antialiased">
         {children}
+        {/* Site-wide scroll hint */}
+        <div className="site-scroll-arrow" aria-hidden>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 5v14" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M6 13l6 6 6-6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </div>
+
         <Analytics />
       </body>
     </html>

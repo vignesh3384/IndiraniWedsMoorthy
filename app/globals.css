@@ -137,3 +137,43 @@
     @apply bg-white/40 dark:bg-black/40 backdrop-blur-md border border-white/20 dark:border-white/10 shadow-lg;
   }
 }
+
+/* Site-wide scroll arrow */
+.site-scroll-arrow {
+  position: fixed;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100000;
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+  color: var(--foreground);
+  pointer-events: none;
+  animation: scrollBounce 1.6s ease-in-out infinite;
+}
+
+.site-scroll-arrow svg { color: currentColor; }
+.site-scroll-arrow svg path { stroke: currentColor; }
+
+@keyframes scrollBounce {
+  0% { transform: translateX(-50%) translateY(0); }
+  40% { transform: translateX(-50%) translateY(-10px); }
+  70% { transform: translateX(-50%) translateY(-6px); }
+  100% { transform: translateX(-50%) translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-scroll-arrow { animation: none; }
+}
+
+/* Hide site arrow when landing gate is active */
+.hide-site-scroll-arrow .site-scroll-arrow {
+  display: none !important;
+}
