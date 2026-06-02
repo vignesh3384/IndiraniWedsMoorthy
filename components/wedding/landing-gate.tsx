@@ -364,11 +364,11 @@ export function LandingGate({ onEnter }: LandingGateProps) {
           <span
             style={{
               fontFamily: "var(--font-tamil-thin), serif",
-              fontSize: "clamp(26px, 5.5vw, 52px)",
+              fontSize: "clamp(32px, 7vw, 60px)",
               fontWeight: 300,
-              color: "#fdfbf7",
+              color: "#9a1b32",
               letterSpacing: "0.06em",
-              textShadow: "0 0 30px rgba(154,27,50,0.6), 0 2px 12px rgba(0,0,0,0.5)",
+              textShadow: "0 2px 8px rgba(0,0,0,0.3)",
               display: "block",
             }}
           >
@@ -402,11 +402,11 @@ export function LandingGate({ onEnter }: LandingGateProps) {
           <span
             style={{
               fontFamily: "var(--font-tamil-thin), serif",
-              fontSize: "clamp(26px, 5.5vw, 52px)",
+              fontSize: "clamp(32px, 7vw, 60px)",
               fontWeight: 300,
-              color: "#fdfbf7",
+              color: "#9a1b32",
               letterSpacing: "0.06em",
-              textShadow: "0 0 30px rgba(154,27,50,0.6), 0 2px 12px rgba(0,0,0,0.5)",
+              textShadow: "0 2px 8px rgba(0,0,0,0.3)",
               display: "block",
             }}
           >
@@ -428,7 +428,7 @@ export function LandingGate({ onEnter }: LandingGateProps) {
           style={{
             fontFamily: "var(--font-tamil-thin), serif",
             fontSize: "clamp(12px, 1.8vw, 16px)",
-            color: "rgba(253,251,247,0.65)",
+            color: "#9a1b32",
             margin: "0 0 28px",
             letterSpacing: "0.12em",
           }}
