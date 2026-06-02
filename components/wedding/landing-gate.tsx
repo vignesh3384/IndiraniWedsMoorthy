@@ -142,7 +142,7 @@ export function LandingGate({ onEnter }: LandingGateProps) {
       if (navigator.vibrate) navigator.vibrate([30, 15, 80, 15, 40]);
 
       setTimeout(() => setIsExiting(true), 400);
-      setTimeout(() => onEnter(), 1600);
+      setTimeout(() => onEnter(), 800);
     },
     [isExiting, onEnter]
   );
@@ -527,9 +527,11 @@ export function LandingGate({ onEnter }: LandingGateProps) {
         .landing-gate-wrapper {
           opacity: 0;
           animation: gateReveal 1.2s ease-out 0.1s forwards;
+          will-change: opacity;
         }
         .landing-gate-wrapper.gate-exiting {
-          animation: gateExitFade 1.4s ease-in forwards !important;
+          animation: gateExitFade 0.8s ease-out forwards !important;
+          pointer-events: none;
         }
 
         @keyframes gateReveal {
@@ -537,9 +539,8 @@ export function LandingGate({ onEnter }: LandingGateProps) {
           to   { opacity: 1; }
         }
         @keyframes gateExitFade {
-          0%   { opacity: 1; transform: scale(1); }
-          60%  { opacity: 0.6; transform: scale(1.04); }
-          100% { opacity: 0; transform: scale(1.08); }
+          0%   { opacity: 1; }
+          100% { opacity: 0; }
         }
         @keyframes contentReveal {
           from { opacity: 0; transform: translateY(28px); }

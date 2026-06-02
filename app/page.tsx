@@ -84,7 +84,7 @@ export default function WeddingPage() {
       if (!autoScrollCancelledRef.current) {
         animatePageScroll();
       }
-    }, 5000);
+    }, 1000);
 
     return () => {
       cancelAutoScroll();
