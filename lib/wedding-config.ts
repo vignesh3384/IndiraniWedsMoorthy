@@ -130,7 +130,7 @@ export const weddingConfig = {
     {
       id: "reception",
       name: "Sri Padma Ram Ganesh Mahal",
-      nameTamil: "ஸ்ரீ பத்மா ராம் கணேஷ் மஹால் (ஸ்ரீ கணபதி ஹால்)",
+      nameTamil: "ஸ்ரீ பத்மா ராம் கணேஷ் மஹால்",
       address: "Dr Rajendra Prasad Rd, Nehru Nagar, Chromepet, Chennai, Tamil Nadu 600044",
       addressTamil: "டாக்டர் ராஜேந்திர பிரசாத் சாலை, நேரு நகர், குரோம்பேட்டை, சென்னை, தமிழ்நாடு 600044",
       mapEmbedUrl: "https://maps.google.com/maps?q=Sri%20Padma%20Ram%20Ganesh%20Mahal,%20Nehru%20Nagar,%20Chromepet,%20Chennai,%20Tamil%20Nadu%20600044&t=&z=15&ie=UTF8&iwloc=&output=embed",
